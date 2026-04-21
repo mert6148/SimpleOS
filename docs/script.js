@@ -291,4 +291,4 @@ document.head.appendChild(style);
             item.style.display = "none";
         }
     }
-});
+;

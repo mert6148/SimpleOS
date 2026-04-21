@@ -1,0 +1,32 @@
+{
+    "version": "1.0.0",
+    "lastUpdated": "2026-04-21T17:59:34+00:00",
+    "sections": {
+        "overview": {
+            "title": "Overview",
+            "content": "",
+            "lastModified": "2026-04-21T17:59:34+00:00"
+        },
+        "architecture": {
+            "title": "Architecture",
+            "content": "",
+            "lastModified": "2026-04-21T17:59:34+00:00"
+        },
+        "api": {
+            "title": "API Reference",
+            "content": "",
+            "lastModified": "2026-04-21T17:59:34+00:00"
+        },
+        "examples": {
+            "title": "Code Examples",
+            "content": "",
+            "lastModified": "2026-04-21T17:59:34+00:00"
+        },
+        "guides": {
+            "title": "Developer Guides",
+            "content": "",
+            "lastModified": "2026-04-21T17:59:34+00:00"
+        }
+    },
+    "searchIndex": []
+}
