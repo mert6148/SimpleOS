@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleOS - Educational x86 Operating System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-microchip"></i>
+                <span>SimpleOS</span>
+            </div>
+            <nav class="navbar">
+                <a href="#overview">Overview</a>
+                <a href="#architecture">Architecture</a>
+                <a href="#getting-started">Getting Started</a>
+                <a href="#features">Features</a>
+                <a href="#api">API</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>SimpleOS</h1>
+            <p class="subtitle">An Educational x86 Operating System Kernel</p>
+            <p class="description">Complete bootable OS demonstrating multitasking, memory management, file systems, and device drivers</p>
+            <div class="hero-buttons">
+                <a href="#getting-started" class="btn btn-primary">Get Started</a>
+                <a href="#architecture" class="btn btn-secondary">Learn Architecture</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">3,450</span>
+                    <span class="stat-label">Lines of Code</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">6</span>
+                    <span class="stat-label">Core Components</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">~95KB</span>
+                    <span class="stat-label">Kernel Binary</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview" class="section">
+        <div class="container">
+            <h2 class="section-title">Overview</h2>
+            <p class="section-intro">SimpleOS is a minimalist but fully-featured x86 operating system kernel, designed as an educational platform to understand core OS concepts.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h3>Multitasking</h3>
+                    <p>Priority-based scheduler with 6 priority levels and round-robin execution within each level.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-memory"></i>
+                    </div>
+                    <h3>Memory Management</h3>
+                    <p>Buddy allocator for physical memory and virtual paging with 4KB pages.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-folder-open"></i>
+                    </div>
+                    <h3>File System</h3>
+                    <p>Virtual File System (VFS) with inode-based abstraction and RAMFs support.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <h3>Device Drivers</h3>
+                    <p>IRQ-driven driver framework with PIC and PIT support for interrupts and timing.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <h3>x86 Architecture</h3>
+                    <p>Full x86 boot sequence, GDT/IDT setup, exception handling, and paging.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Educational</h3>
+                    <p>Well-documented codebase with comprehensive guides for learning and extension.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started Section -->
+    <section id="getting-started" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">Getting Started</h2>
+            
+            <div class="getting-started-content">
+                <div class="gs-column">
+                    <h3>Requirements</h3>
+                    <ul class="requirement-list">
+                        <li><i class="fas fa-check"></i> GCC cross-compiler (x86 target)</li>
+                        <li><i class="fas fa-check"></i> GNU Make</li>
+                        <li><i class="fas fa-check"></i> QEMU (for emulation)</li>
+                        <li><i class="fas fa-check"></i> Standard C library headers</li>
+                    </ul>
+                </div>
+                <div class="gs-column">
+                    <h3>Quick Start</h3>
+                    <div class="code-block">
+                        <pre><code>$ make              # Build simpleos.elf
+$ make qemu         # Run in QEMU
+$ make clean        # Clean artifacts
+$ make all          # Full rebuild</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="directory-structure">
+                <h3>Project Structure</h3>
+                <div class="tree">
+                    <div class="tree-item">
+                        <span class="tree-icon">📁</span>
+                        <span class="tree-label"><strong>SimpleOS/</strong></span>
+                    </div>
+                    <div class="tree-item indent-1">
+                        <span class="tree-icon">📁</span>
+                        <span class="tree-label"><strong>kernel/arch/x86/</strong> - Boot, GDT/IDT, paging</span>
+                    </div>
+                    <div class="tree-item indent-2">
+                        <span class="tree-label">boot.S, link.ld, setup.c, exceptions.S, irq.c</span>
+                    </div>
+                    <div class="tree-item indent-1">
+                        <span class="tree-icon">📁</span>
+                        <span class="tree-label"><strong>kernel/core/</strong> - Kernel init, scheduler</span>
+                    </div>
+                    <div class="tree-item indent-2">
+                        <span class="tree-label">kmain.c, sched.c</span>
+                    </div>
+                    <div class="tree-item indent-1">
+                        <span class="tree-icon">📁</span>
+                        <span class="tree-label"><strong>kernel/drivers/</strong> - Device drivers</span>
+                    </div>
+                    <div class="tree-item indent-2">
+                        <span class="tree-label">driver.c, pic.c, pit.c</span>
+                    </div>
+                    <div class="tree-item indent-1">
+                        <span class="tree-icon">📁</span>
+                        <span class="tree-label"><strong>kernel/fs/</strong> - Virtual File System</span>
+                    </div>
+                    <div class="tree-item indent-2">
+                        <span class="tree-label">vfs.c, ramfs.c</span>
+                    </div>
+                    <div class="tree-item indent-1">
+                        <span class="tree-icon">📁</span>
+                        <span class="tree-label"><strong>kernel/mm/</strong> - Memory management</span>
+                    </div>
+                    <div class="tree-item indent-2">
+                        <span class="tree-label">mm.c</span>
+                    </div>
+                    <div class="tree-item indent-1">
+                        <span class="tree-icon">📁</span>
+                        <span class="tree-label"><strong>kernel/include/</strong> - Public API headers</span>
+                    </div>
+                    <div class="tree-item indent-2">
+                        <span class="tree-label">kernel_types.h, sched.h, mm.h, fs.h, driver.h</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture" class="section">
+        <div class="container">
+            <h2 class="section-title">Architecture</h2>
+            <p class="section-intro">SimpleOS uses a modular architecture with clear separation of concerns.</p>
+
+            <div class="architecture-grid">
+                <div class="arch-card">
+                    <h3><i class="fas fa-hourglass-start"></i> Scheduler</h3>
+                    <p><strong>Location:</strong> kernel/core/sched.c</p>
+                    <p>Priority-based scheduler with 6 levels (0-5). Uses round-robin within each priority level. Manages task states: CREATED → READY → RUNNING → BLOCKED → ZOMBIE.</p>
+                    <div class="api-snippet">
+                        <code>scheduler_init()</code><br>
+                        <code>scheduler_add_task()</code><br>
+                        <code>scheduler_context_switch()</code>
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <h3><i class="fas fa-database"></i> Memory Manager</h3>
+                    <p><strong>Location:</strong> kernel/mm/mm.c</p>
+                    <p>Buddy allocator for physical memory (power-of-2 block sizes) and virtual memory paging with 4KB pages. Maximum heap: 128MB.</p>
+                    <div class="api-snippet">
+                        <code>kmalloc()</code><br>
+                        <code>kfree()</code><br>
+                        <code>vm_map() / vm_unmap()</code>
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <h3><i class="fas fa-folder"></i> Virtual File System</h3>
+                    <p><strong>Location:</strong> kernel/fs/vfs.c</p>
+                    <p>Inode-based abstraction supporting multiple file systems. Implements standard file operations: open, read, write, close. RAMFs backend included.</p>
+                    <div class="api-snippet">
+                        <code>vfs_open()</code><br>
+                        <code>vfs_read() / vfs_write()</code><br>
+                        <code>vfs_close()</code>
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <h3><i class="fas fa-plug"></i> Device Drivers</h3>
+                    <p><strong>Location:</strong> kernel/drivers/</p>
+                    <p>IRQ-driven framework with PIC (Programmable Interrupt Controller) and PIT (Programmable Interval Timer). Supports interrupt registration and handling.</p>
+                    <div class="api-snippet">
+                        <code>driver_register()</code><br>
+                        <code>driver_unregister()</code><br>
+                        <code>handle_irq()</code>
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <h3><i class="fas fa-processor"></i> x86 Architecture</h3>
+                    <p><strong>Location:</strong> kernel/arch/x86/</p>
+                    <p>Complete x86 boot sequence: real mode → protected mode. Sets up GDT, IDT, exception handlers, and paging with 4-level page tables.</p>
+                    <div class="api-snippet">
+                        <code>boot.S</code><br>
+                        <code>setup.c (GDT/IDT)</code><br>
+                        <code>exceptions.S</code>
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <h3><i class="fas fa-cogs"></i> Boot Sequence</h3>
+                    <p><strong>Location:</strong> kernel/core/kmain.c</p>
+                    <p>6-phase initialization: (1) Memory Setup, (2) Scheduler, (3) VFS, (4) Drivers, (5) Virtual Memory, (6) Init Task.</p>
+                    <div class="api-snippet">
+                        <code>kmain()</code><br>
+                        <code>Phase-specific inits</code><br>
+                        <code>printk() output</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="boot-sequence">
+                <h3>6-Phase Boot Sequence</h3>
+                <div class="sequence">
+                    <div class="phase">
+                        <div class="phase-number">1</div>
+                        <div class="phase-content">
+                            <h4>Memory Setup</h4>
+                            <p>Initialize buddy allocator and heap</p>
+                        </div>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="phase">
+                        <div class="phase-number">2</div>
+                        <div class="phase-content">
+                            <h4>Scheduler</h4>
+                            <p>Initialize task queues and TCB pool</p>
+                        </div>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="phase">
+                        <div class="phase-number">3</div>
+                        <div class="phase-content">
+                            <h4>VFS</h4>
+                            <p>Register file systems (RAMFs)</p>
+                        </div>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="phase">
+                        <div class="phase-number">4</div>
+                        <div class="phase-content">
+                            <h4>Drivers</h4>
+                            <p>Detect and register PIC/PIT</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="sequence" style="justify-content: center;">
+                    <div class="arrow">↓</div>
+                </div>
+                <div class="sequence">
+                    <div class="phase">
+                        <div class="phase-number">5</div>
+                        <div class="phase-content">
+                            <h4>Virtual Memory</h4>
+                            <p>Enable paging and MMU</p>
+                        </div>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="phase">
+                        <div class="phase-number">6</div>
+                        <div class="phase-content">
+                            <h4>Init Task</h4>
+                            <p>Create and run first user task</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">Key Features</h2>
+            
+            <div class="features-detailed">
+                <div class="feature-row">
+                    <div class="feature-text">
+                        <h3><i class="fas fa-tasks"></i> Priority-Based Scheduling</h3>
+                        <p>6 priority levels (0-lowest to 5-highest) with round-robin execution within each level. Enables multitasking with predictable task behavior.</p>
+                    </div>
+                    <div class="feature-example">
+                        <div class="code-block">
+                            <pre><code>Task States:
+CREATED → READY → RUNNING
+  ↓
+BLOCKED → ZOMBIE</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-row">
+                    <div class="feature-text">
+                        <h3><i class="fas fa-square"></i> Buddy Allocator</h3>
+                        <p>Efficient physical memory management using power-of-2 block sizes. Prevents fragmentation and provides fast allocation/deallocation.</p>
+                    </div>
+                    <div class="feature-example">
+                        <div class="code-block">
+                            <pre><code>void *ptr;
+KERNEL_STATUS status = kmalloc(256, &ptr);
+if (status == KERNEL_SUCCESS) {
+    // Use memory
+    kfree(ptr);
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-row">
+                    <div class="feature-text">
+                        <h3><i class="fas fa-layer-group"></i> Virtual Paging</h3>
+                        <p>4-level x86-64 page tables with 4KB pages. Enables virtual memory, process isolation, and memory protection.</p>
+                    </div>
+                    <div class="feature-example">
+                        <div class="code-block">
+                            <pre><code>// Map virtual to physical address
+vm_map(virt_addr, phys_addr, FLAGS);
+
+// Unmap virtual address
+vm_unmap(virt_addr);</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-row">
+                    <div class="feature-text">
+                        <h3><i class="fas fa-files"></i> VFS Abstraction</h3>
+                        <p>Inode-based file system interface supporting multiple backends. RAMFs included as default in-memory file system.</p>
+                    </div>
+                    <div class="feature-example">
+                        <div class="code-block">
+                            <pre><code>struct file *f;
+vfs_open("/file.txt", &f);
+vfs_read(f, buffer, 512, &bytes_read);
+vfs_write(f, data, size, &bytes_written);
+vfs_close(f);</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-row">
+                    <div class="feature-text">
+                        <h3><i class="fas fa-interrupt"></i> IRQ Driver Framework</h3>
+                        <p>Abstraction for registering interrupt handlers. Supports PIC (Programmable Interrupt Controller) for managing up to 16 IRQs.</p>
+                    </div>
+                    <div class="feature-example">
+                        <div class="code-block">
+                            <pre><code>struct driver_ops ops = {
+    .init = driver_init,
+    .handle_irq = irq_handler,
+};
+driver_register("device", IRQ_NUM, &ops);</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-row">
+                    <div class="feature-text">
+                        <h3><i class="fas fa-print"></i> Serial Console</h3>
+                        <p>Full printf-style logging via <code>printk()</code> to serial port (0x3F8). Essential for debugging and understanding OS behavior.</p>
+                    </div>
+                    <div class="feature-example">
+                        <div class="code-block">
+                            <pre><code>printk("[SCHED] Task PID=%d state=%d\n",
+       task->pid, task->state);
+printk("[MM] Allocated %d bytes at 0x%x\n",
+       size, (u32)ptr);</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Section -->
+    <section id="api" class="section">
+        <div class="container">
+            <h2 class="section-title">API Reference</h2>
+            <p class="section-intro">Quick reference for commonly used kernel APIs.</p>
+
+            <div class="api-tabs">
+                <button class="api-tab-button active" data-tab="memory">Memory</button>
+                <button class="api-tab-button" data-tab="scheduler">Scheduler</button>
+                <button class="api-tab-button" data-tab="vfs">File System</button>
+                <button class="api-tab-button" data-tab="drivers">Drivers</button>
+                <button class="api-tab-button" data-tab="types">Types</button>
+            </div>
+
+            <div class="api-content">
+                <div class="api-tab active" id="memory-tab">
+                    <h3>Memory Management</h3>
+                    <div class="api-item">
+                        <code class="api-signature">KERNEL_STATUS kmalloc(size_t size, void **ptr)</code>
+                        <p>Allocate memory from kernel heap using buddy allocator. Returns KERNEL_SUCCESS on success, KERNEL_ENOMEM on failure.</p>
+                    </div>
+                    <div class="api-item">
+                        <code class="api-signature">KERNEL_STATUS kfree(void *ptr)</code>
+                        <p>Free previously allocated memory. Returns KERNEL_SUCCESS if pointer was valid.</p>
+                    </div>
+                    <div class="api-item">
+                        <code class="api-signature">KERNEL_STATUS vm_map(addr_t virt, addr_t phys, u32 flags)</code>
+                        <p>Map virtual address to physical address with specified page flags (present, writable, user, etc.).</p>
+                    </div>
+                    <div class="api-item">
+                        <code class="api-signature">KERNEL_STATUS vm_unmap(addr_t virt)</code>
+                        <p>Unmap virtual address and remove page table entry.</p>
+                    </div>
+                </div>
+
+                <div class="api-tab" id="scheduler-tab">
+                    <h3>Scheduler</h3>
+                    <div class="api-item">
+                        <code class="api-signature">KERNEL_STATUS scheduler_init(void)</code>
+                        <p>Initialize scheduler, task queues, and TCB (Task Control Block) pool. Called during boot phase 2.</p>
+                    </div>
+                    <div class="api-item">
+                        <code class="api-signature">KERNEL_STATUS scheduler_add_task(struct task *task)</code>
+                        <p>Add task to appropriate ready queue based on priority level. Transitions task to READY state.</p>
+                    </div>
+                    <div class="api-item">
+                        <code class="api-signature">void scheduler_context_switch(void)</code>
+                        <p>Save current task context, pick next task from ready queue, and restore its context.</p>
+                    </div>
+                    <div class="api-item">
+                        <code class="api-signature">KERNEL_STATUS scheduler_block_task(struct task *task)</code>
+                        <p>Transition task from RUNNING to BLOCKED state and trigger context switch.</p>
+                    </div>
+                </div>
+
+                <div class="api-tab" id="vfs-tab">
+                    <h3>Virtual File System</h3>
+                    <div class="api-item">
+                        <code class="api-signature">KERNEL_STATUS vfs_open(const char *path, struct file **file)</code>
+                        <p>Open file at given path. Creates file handle with file operations from registered file system.</p>
+                    </div>
+                    <div class="api-item">
+                        <code class="api-signature">KERNEL_STATUS vfs_read(struct file *file, void *buf, size_t size, size_t *read)</code>
+                        <p>Read up to size bytes from file. Returns actual bytes read in *read parameter.</p>
+                    </div>
+                    <div class="api-item">
+                        <code class="api-signature">KERNEL_STATUS vfs_write(struct file *file, const void *buf, size_t size, size_t *written)</code>
+                        <p>Write up to size bytes to file. Returns actual bytes written in *written parameter.</p>
+                    </div>
+                    <div class="api-item">
+                        <code class="api-signature">KERNEL_STATUS vfs_close(struct file *file)</code>
+                        <p>Close file handle and flush any pending data.</p>
+                    </div>
+                </div>
+
+                <div class="api-tab" id="drivers-tab">
+                    <h3>Device Drivers</h3>
+                    <div class="api-item">
+                        <code class="api-signature">KERNEL_STATUS driver_register(const char *name, u32 irq, struct driver_ops *ops)</code>
+                        <p>Register device driver with interrupt number and operations. Enables interrupt routing to handler.</p>
+                    </div>
+                    <div class="api-item">
+                        <code class="api-signature">KERNEL_STATUS driver_unregister(const char *name)</code>
+                        <p>Unregister driver and disable interrupt routing.</p>
+                    </div>
+                    <div class="api-item">
+                        <code class="api-signature">void handle_irq(u32 irq_number)</code>
+                        <p>Main IRQ handler. Routes interrupt to registered driver handler via PIC (Programmable Interrupt Controller).</p>
+                    </div>
+                </div>
+
+                <div class="api-tab" id="types-tab">
+                    <h3>Type System</h3>
+                    <p>SimpleOS uses shorthand type definitions (kernel_types.h) for portability:</p>
+                    <div class="types-table">
+                        <div class="types-row">
+                            <code>s8, s16, s32, s64</code>
+                            <span>Signed integers (8, 16, 32, 64-bit)</span>
+                        </div>
+                        <div class="types-row">
+                            <code>u8, u16, u32, u64</code>
+                            <span>Unsigned integers (8, 16, 32, 64-bit)</span>
+                        </div>
+                        <div class="types-row">
+                            <code>bool</code>
+                            <span>Boolean type (True/False)</span>
+                        </div>
+                        <div class="types-row">
+                            <code>KERNEL_STATUS</code>
+                            <span>Status/error code (0=success, negative=error)</span>
+                        </div>
+                        <div class="types-row">
+                            <code>addr_t</code>
+                            <span>Virtual/physical address type</span>
+                        </div>
+                    </div>
+                    <p style="margin-top: 15px;"><strong>Status Codes:</strong></p>
+                    <div class="status-codes">
+                        <div><code>KERNEL_SUCCESS (0)</code> - Operation succeeded</div>
+                        <div><code>KERNEL_ENOMEM (-4)</code> - Memory allocation failed</div>
+                        <div><code>KERNEL_EINVAL (-7)</code> - Invalid argument</div>
+                        <div><code>KERNEL_EBUSY (-16)</code> - Resource busy</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Code Examples Section -->
+    <section id="examples" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">Code Examples</h2>
+
+            <div class="example-card">
+                <h3>Basic Memory Allocation</h3>
+                <div class="code-block">
+                    <pre><code>#include "kernel/include/kernel_types.h"
+#include "kernel/include/mm.h"
+
+void *ptr;
+KERNEL_STATUS status = kmalloc(1024, &ptr);
+
+if (status != KERNEL_SUCCESS) {
+    printk("Allocation failed\n");
+    return status;
+}
+
+// Use memory at ptr
+printk("Allocated 1024 bytes at 0x%x\n", (u32)ptr);
+
+// Free when done
+kfree(ptr);</code></pre>
+                </div>
+            </div>
+
+            <div class="example-card">
+                <h3>Creating a Task</h3>
+                <div class="code-block">
+                    <pre><code>#include "kernel/include/sched.h"
+
+struct task *task = kmalloc(sizeof(struct task), (void**)&task);
+task->pid = next_pid++;
+task->priority = 3;  // Mid-priority
+task->state = TASK_CREATED;
+task->entry_point = my_task_function;
+
+// Add to scheduler
+scheduler_add_task(task);
+
+void my_task_function() {
+    printk("Task running!\n");
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="example-card">
+                <h3>File Operations</h3>
+                <div class="code-block">
+                    <pre><code>#include "kernel/include/fs.h"
+
+struct file *f;
+KERNEL_STATUS status = vfs_open("/file.txt", &f);
+
+if (status == KERNEL_SUCCESS) {
+    char buffer[256];
+    size_t read;
+    
+    status = vfs_read(f, buffer, 256, &read);
+    printk("Read %d bytes\n", read);
+    
+    vfs_close(f);
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="example-card">
+                <h3>Device Driver Registration</h3>
+                <div class="code-block">
+                    <pre><code>#include "kernel/include/driver.h"
+
+static KERNEL_STATUS my_driver_init(void) {
+    printk("[DRIVER] Initializing...\n");
+    return KERNEL_SUCCESS;
+}
+
+static void my_irq_handler(u32 irq) {
+    printk("[DRIVER] IRQ %d handled\n", irq);
+}
+
+KERNEL_STATUS my_driver_register(void) {
+    struct driver_ops ops = {
+        .init = my_driver_init,
+        .handle_irq = my_irq_handler,
+    };
+    
+    return driver_register("my_device", 5, &ops);
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Documentation Section -->
+    <section id="documentation" class="section">
+        <div class="container">
+            <h2 class="section-title">Documentation</h2>
+            <p class="section-intro">Comprehensive guides and references for SimpleOS development.</p>
+
+            <div class="docs-grid">
+                <a href="#" class="doc-card">
+                    <h3><i class="fas fa-book"></i> README</h3>
+                    <p>Complete learning guide and feature overview. Start here for understanding SimpleOS.</p>
+                </a>
+                <a href="#" class="doc-card">
+                    <h3><i class="fas fa-project-diagram"></i> Architecture</h3>
+                    <p>Detailed subsystem documentation. Deep dive into scheduler, memory, VFS, and drivers.</p>
+                </a>
+                <a href="#" class="doc-card">
+                    <h3><i class="fas fa-hammer"></i> Building Guide</h3>
+                    <p>Build procedures and troubleshooting. Setup development environment and compile.</p>
+                </a>
+                <a href="#" class="doc-card">
+                    <h3><i class="fas fa-list"></i> File Summary</h3>
+                    <p>Complete file-by-file reference with key functions and line counts.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">Contact & Support</h2>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Get in Touch</h3>
+                    <p>Have questions about SimpleOS? Need help with development? Get in touch with us!</p>
+                    
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <strong>Email</strong>
+                                <a href="mailto:mertdogan00ay437@gmail.com">mertdogan00ay437@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="contact-method">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <strong>Phone</strong>
+                                <a href="tel:+905334727561">+90 533 472 75 61</a>
+                            </div>
+                        </div>
+                        <div class="contact-method">
+                            <i class="fas fa-github"></i>
+                            <div>
+                                <strong>Repository</strong>
+                                <a href="https://github.com" target="_blank">GitHub Project</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <h3>Send a Message</h3>
+                    <form class="form-group">
+                        <div class="form-input">
+                            <label>Name</label>
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-input">
+                            <label>Email</label>
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-input">
+                            <label>Subject</label>
+                            <input type="text" placeholder="Message Subject" required>
+                        </div>
+                        <div class="form-input">
+                            <label>Message</label>
+                            <textarea placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About SimpleOS</h4>
+                    <p>An educational x86 operating system kernel demonstrating core OS concepts for learning and development.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#overview">Overview</a></li>
+                        <li><a href="#architecture">Architecture</a></li>
+                        <li><a href="#api">API Reference</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Issues</a></li>
+                        <li><a href="#">Contributing</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 SimpleOS. Licensed under MIT License. Developed by Mert Doğan.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
