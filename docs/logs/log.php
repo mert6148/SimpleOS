@@ -26,4 +26,22 @@ header("Expires: 0");
 
 header("Content-Type: text/plain");
 header("Cache-Control: no-cache, no-store, must-revalidate");
-header("Pragma: no-cache");
+header("Pragma: no-cache");<?php
+$sayi = 100;
+
+// 1. Doğal Logaritma (ln - e tabanında)
+$ln_sonuc = log($sayi); 
+
+// 2. 10'luk Tabanda Logaritma
+$log10_sonuc = log10($sayi); 
+
+// 3. Özel Tabanda Logaritma (Örn: 2'lik taban)
+$taban = 2;
+$log2_sonuc = log($sayi, $taban);
+
+// Sonuçları Yazdıralım
+echo "Sayı: $sayi <br>";
+echo "Doğal Logaritma (ln): " . round($ln_sonuc, 4) . "<br>";
+echo "10'luk Tabanda Log: " . $log10_sonuc . "<br>";
+echo "2'lik Tabanda Log: " . round($log2_sonuc, 4);
+?>

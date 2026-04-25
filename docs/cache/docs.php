@@ -2,54 +2,50 @@
 
 namespace Cache\Docs;
 
-use Cache\CacheInterface;
+// Varsayımsal arayüz (Interface tanımlı değilse hata vermemesi için basitçe ekledik)
+interface CacheInterface {
+    public function get($key, $default = null);
+    public function set($key, $value, $ttl = null);
+    public function delete($key);
+    public function clear();
+    public function has($key);
+}
 
 class DocsCache implements CacheInterface
 {
+    // Verileri saklamak için statik bir dizi
+    private static $storage = [];
+
     public function get($key, $default = null)
     {
-        // Implementation for getting a value from the cache
-        private $cacheKey;
-        private $message;
-        private $code;
-        private $previous;
-
+        return $this->has($key) ? self::$storage[$key] : $default;
     }
 
     public function set($key, $value, $ttl = null)
     {
-        // Implementation for setting a value in the cache
-        private $cacheKey;
-        private $message;
-        private $code;
-        private $previous;
+        // SimpleOS: Burada TTL (zaman aşımı) mantığı eklenebilir
+        self::$storage[$key] = $value;
+        return true;
     }
 
     public function delete($key)
     {
-        // Implementation for deleting a value from the cache
-        private $cacheKey;
-        private $message;
-        private $code;
-        private $previous;
+        if ($this->has($key)) {
+            unset(self::$storage[$key]);
+            return true;
+        }
+        return false;
     }
 
     public function clear()
     {
-        // Implementation for clearing the cache
-        private $cacheKey;
-        private $message;
-        private $code;
-        private $previous;
+        self::$storage = [];
+        return true;
     }
 
     public function has($key)
     {
-        // Implementation for checking if a key exists in the cache
-        private $cacheKey;
-        private $message;
-        private $code;
-        private $previous;
+        return isset(self::$storage[$key]);
     }
 }
 
@@ -66,77 +62,49 @@ class DocsCacheItem
         $this->ttl = $ttl;
     }
 
-    public function getKey()
-    {
-        return $this->key;
-    }
-
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    public function getTtl()
-    {
-        return $this->ttl;
-    }
+    public function getKey()   { return $this->key; }
+    public function getValue() { return $this->value; }
+    public function getTtl()   { return $this->ttl; }
 }
 
 class DocsCachePool
 {
-    private $cacheItems = [];
+    private $items = [];
 
     public function getItem($key)
     {
-        // Implementation for retrieving a cache item by key
-        private $cacheKey;
-        private $message;
-        private $code;
-        private $previous;
+        return $this->items[$key] ?? null;
     }
 
     public function save(DocsCacheItem $item)
     {
-        // Implementation for saving a cache item
-        private $cacheKey;
-        private $message;
-        private $code;
-        private $previous;
+        $this->items[$item->getKey()] = $item;
+        return true;
     }
 
     public function deleteItem($key)
     {
-        // Implementation for deleting a cache item by key
-        private $cacheKey;
-        private $message;
-        private $code;
-        private $previous;
+        unset($this->items[$key]);
     }
 
     public function clear()
     {
-        // Implementation for clearing all cache items
-        private $cacheKey;
-        private $message;
-        private $code;
-        private $previous;
+        $this->items = [];
     }
 }
 
 class DocsCacheException extends \Exception
 {
-    // Custom exception for cache-related errors
-    public function __construct($message = "", $code = 0, \Throwable $previous = null)
+    private $cacheKey;
+
+    public function __construct($message = "", $code = 0, $cacheKey = null, \Throwable $previous = null)
     {
+        $this->cacheKey = $cacheKey;
         parent::__construct($message, $code, $previous);
     }
 
     public function getCacheKey()
     {
-        // Implementation for retrieving the cache key associated with the exception
-        private $cacheKey;
-        private $message;
-        private $code;
-        private $previous;
+        return $this->cacheKey;
     }
 }
