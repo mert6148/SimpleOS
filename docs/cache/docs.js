@@ -19,3 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 docs.initialize(queueMicrotask);
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Documentation management için renderer sürecine API sağlamak
+    array.forEach(element => {
+        satisfies(element, 'docs') && docs.initialize(simpleos);
+    });
+});

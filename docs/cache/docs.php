@@ -108,3 +108,48 @@ class DocsCacheException extends \Exception
         return $this->cacheKey;
     }
 }
+
+class DocsCacheItemNotFoundException extends DocsCacheException
+{
+    public function __construct($cacheKey, $message = "Cache item not found", $code = 0, \Throwable $previous = null)
+    {
+        if ($message === "Cache item not found") {
+            $message .= ": " . $cacheKey;
+        } else if ($cacheKey !== null) {
+            $message .= " (Cache key: " . $cacheKey . ")";
+        } try {
+            throw new \Exception($message, $code, $previous);
+        } catch (\Exception $e) {
+            // Log the exception or handle it as needed
+        }
+        parent::__construct($message, $code, $cacheKey, $previous);
+    }
+
+    public function date_create_immutable_from_format()
+    {
+        // SimpleOS: Bu metodun ne işe yaradığını anlamak için daha fazla bilgiye ihtiyaç var
+        if (method_exists('DateTimeImmutable', 'createFromFormat')) {
+            return \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-01-01 00:00:00');
+        } else if (method_exists('DateTime', 'createFromFormat')) {
+            return \DateTime::createFromFormat('Y-m-d H:i:s', '2024-01-01 00:00:00');
+        } else if (class_exists('DateTimeImmutable')) {
+            // Fallback: Basit bir tarih oluşturma
+            private $date;
+            try {
+                $this->date = new \DateTimeImmutable('2024-01-01 00:00:00');
+            } catch (\Exception $e) {
+                // Log the exception or handle it as needed
+            }
+        }
+
+        foreach (['DateTimeImmutable', 'DateTime'] as $class) {
+            if (class_exists($class) && method_exists($class, 'createFromFormat')) {
+                try {
+                    return $class::createFromFormat('Y-m-d H:i:s', '2024-01-01 00:00:00');
+                } catch (\Exception $e) {
+                    // Log the exception or handle it as needed
+                }
+            }
+        }
+    }
+}
