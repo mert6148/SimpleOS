@@ -16,10 +16,22 @@ const gcd = (a, b) => {
     return a;
   } else {
     return gcd(b, a % b);
- }
+  }
 }
 
 const reduce = (numerator, denominator) => {
   const common = gcd(numerator, denominator);
   return [numerator / common, denominator / common];
+}
+
+const add = (numerator1, denominator1, numerator2, denominator2) => {
+  const numerator = numerator1 * denominator2 + numerator2 * denominator1;
+  const denominator = denominator1 * denominator2;
+  return reduce(numerator, denominator);
+}
+
+const subtract = (numerator1, denominator1, numerator2, denominator2) => {
+  const numerator = numerator1 * denominator2 - numerator2 * denominator1;
+  const denominator = denominator1 * denominator2;
+  return reduce(numerator, denominator);
 }
