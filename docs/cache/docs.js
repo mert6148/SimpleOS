@@ -26,3 +26,36 @@ document.addEventListener('DOMContentLoaded', () => {
         satisfies(element, 'docs') && docs.initialize(simpleos);
     });
 });
+
+document.documentElement.addEventListener('click', (event) => {
+    const target = event.target;
+    if (target.matches('.docs-link')) {
+        event.preventDefault();
+        const url = target.getAttribute('href');
+        docs.openDocumentation(url);
+    } else if (target.matches('.docs-close')) {
+        event.preventDefault();
+        docs.closeDocumentation();
+    }
+});
+
+document.documentElement.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+        docs.closeDocumentation();
+    } else if (event.key === 'F1') {
+        event.preventDefault();
+        docs.openDocumentation();
+    }
+});
+
+document.body.addEventListener('click', (event) => {
+    const target = event.target;
+    if (target.matches('.docs-link')) {
+        event.preventDefault();
+        const url = target.getAttribute('href');
+        docs.openDocumentation(url);
+    } else if (target.matches('.docs-close')) {
+        event.preventDefault();
+        docs.closeDocumentation();
+    }
+});
