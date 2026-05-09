@@ -1,0 +1,21 @@
+name: Linux araç zinciri
+
+on:
+  push:
+    paths:
+      - 'linux/**'
+  pull_request:
+    paths:
+      - 'linux/**'
+
+permissions:
+  contents: read
+
+jobs:
+  build-linux-subproject:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Derleme ve cppcheck (varsa)
+        run: make -C linux ci

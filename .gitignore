@@ -23,6 +23,9 @@ iso/
 build/
 .cache/
 
+# Linux alt proje araç çıktıları
+linux/bin/
+
 # Loglar
 logs/
 *.log
