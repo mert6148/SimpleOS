@@ -1,0 +1,32 @@
+Seçenek A — Klasör henüz git repo değilse (ilk kurulum)
+
+cd "c:\Users\mertd\OneDrive\Masaüstü\SimpleOS"
+git init
+git branch -M main
+git add .
+git commit -m "Initial commit"
+git remote add origin "https://github.com/mert6148/SimpleOS.git"
+git push -u origin main
+
+Seçenek B — Klasör zaten git repo ise (remote ayarla + gönder)
+
+cd "c:\Users\mertd\OneDrive\Masaüstü\SimpleOS"
+
+git status
+
+git remote -v
+git remote remove origin   # origin varsa ve yanlışsa
+git remote add origin "https://github.com/mert6148/SimpleOS.git"
+
+git branch -M main
+
+git add .
+git commit -m "Sync project"   # commit yoksa oluşturur; "nothing to commit" çıkarsa sorun değil
+git push -u origin main
+
+Repo “main” değil “master” istiyorsa
+
+GitHub’daki varsayılan dal master ise şu şekilde gönder:
+
+git branch -M master
+git push -u origin master
