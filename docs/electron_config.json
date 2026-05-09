@@ -1,0 +1,146 @@
+{
+  "app": {
+    "name": "SimpleOS Docs Viewer",
+    "version": "1.0.0",
+    "description": "Chromium-based documentation viewer with Google Docs integration"
+  },
+  "window": {
+    "width": 1400,
+    "height": 900,
+    "minWidth": 800,
+    "minHeight": 600,
+    "frame": true,
+    "show": true,
+    "webPreferences": {
+      "nodeIntegration": false,
+      "contextIsolation": true,
+      "enableRemoteModule": false,
+      "preload": "preload.js"
+    }
+  },
+  "api": {
+    "baseUrl": "http://127.0.0.1:8000/api",
+    "timeout": 30000,
+    "retryAttempts": 3,
+    "retryDelay": 1000
+  },
+  "google": {
+    "clientId": "${GOOGLE_CLIENT_ID}",
+    "clientSecret": "${GOOGLE_CLIENT_SECRET}",
+    "scopes": [
+      "https://www.googleapis.com/auth/drive",
+      "https://www.googleapis.com/auth/documents",
+      "https://www.googleapis.com/auth/spreadsheets",
+      "https://www.googleapis.com/auth/presentations"
+    ],
+    "redirectUrl": "http://localhost:8000/auth/google/callback"
+  },
+  "cache": {
+    "enabled": true,
+    "maxSize": 104857600,
+    "ttl": 3600000,
+    "directory": "./cache"
+  },
+  "features": {
+    "darkMode": true,
+    "offlineMode": true,
+    "autoSync": true,
+    "autoSyncInterval": 300000,
+    "codeHighlighting": true,
+    "markdownSupport": true,
+    "pdfExport": true
+  },
+  "storage": {
+    "type": "localStorage",
+    "encryption": false,
+    "persistentCache": true
+  },
+  "logging": {
+    "enabled": true,
+    "level": "info",
+    "file": "./logs/app.log",
+    "maxSize": 10485760,
+    "maxFiles": 5
+  },
+  "ui": {
+    "theme": "auto",
+    "language": "tr",
+    "fontSize": 14,
+    "fontFamily": "Segoe UI, -apple-system, BlinkMacSystemFont, sans-serif",
+    "lineHeight": 1.6,
+    "codeTheme": "atom-one-dark"
+  },
+  "keyboard": {
+    "importDocs": "CmdOrCtrl+I",
+    "exportHtml": "CmdOrCtrl+E",
+    "exportPdf": "CmdOrCtrl+Shift+E",
+    "search": "CmdOrCtrl+F",
+    "toggleDarkMode": "CmdOrCtrl+Shift+D",
+    "openSettings": "CmdOrCtrl+,",
+    "clearCache": "CmdOrCtrl+Shift+Delete"
+  },
+  "integrations": {
+    "googleDocs": {
+      "enabled": true,
+      "autoFetch": true,
+      "batchSize": 10
+    },
+    "googleSheets": {
+      "enabled": true,
+      "syncInterval": 300000
+    },
+    "googleSlides": {
+      "enabled": true,
+      "exportFormats": ["png", "jpeg", "svg"]
+    },
+    "googleDrive": {
+      "enabled": true,
+      "watchFolders": true
+    }
+  },
+  "export": {
+    "formats": {
+      "html": {
+        "enabled": true,
+        "minify": true,
+        "includeCss": true
+      },
+      "markdown": {
+        "enabled": true,
+        "includeImages": true
+      },
+      "pdf": {
+        "enabled": true,
+        "format": "A4",
+        "margin": "1cm"
+      },
+      "txt": {
+        "enabled": true
+      },
+      "json": {
+        "enabled": true,
+        "pretty": true
+      }
+    },
+    "compression": {
+      "enabled": true,
+      "format": "zip"
+    }
+  },
+  "security": {
+    "sandbox": true,
+    "contentSecurityPolicy": true,
+    "blockExternalResources": false,
+    "allowScripts": true
+  },
+  "updater": {
+    "enabled": true,
+    "checkInterval": 86400000,
+    "autoDownload": false,
+    "autoInstall": false
+  },
+  "analytics": {
+    "enabled": false,
+    "trackingId": ""
+  }
+}

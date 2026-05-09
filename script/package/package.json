@@ -1,0 +1,16 @@
+{
+  "name": "simpleos-script-tools",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SimpleOS için küçük script/CLI yardımcıları",
+  "main": "../index.js",
+  "license": "MIT",
+  "author": "Mert Doğanay",
+  "scripts": {
+    "start": "node ../index.js help",
+    "env:print": "node ../index.js env print"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

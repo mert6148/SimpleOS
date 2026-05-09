@@ -1,0 +1,107 @@
+{
+  "name": "simpleos-docs-viewer",
+  "version": "1.0.0",
+  "description": "SimpleOS Documentation Viewer - Chromium-based desktop application with Google Docs integration",
+  "main": "public/electron_main.js",
+  "homepage": "./",
+  "author": "Mert Doğan",
+  "license": "MIT",
+  "scripts": {
+    "react-start": "react-scripts start",
+    "react-build": "react-scripts build",
+    "react-test": "react-scripts test",
+    "react-eject": "react-scripts eject",
+    "electron-start": "concurrently \"npm run react-start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-dev": "electron .",
+    "electron-build": "npm run react-build && electron-builder",
+    "build": "npm run react-build && npm run electron-build",
+    "build-windows": "npm run react-build && electron-builder --win",
+    "build-linux": "npm run react-build && electron-builder --linux",
+    "build-mac": "npm run react-build && electron-builder --mac",
+    "start": "react-scripts start",
+    "dev": "concurrently \"npm run react-start\" \"wait-on http://localhost:3000 && electron .\"",
+    "php-server": "php -S 127.0.0.1:8000 -t ./docs",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "axios": "^1.4.0",
+    "marked": "^11.0.0",
+    "dompurify": "^3.0.6",
+    "highlight.js": "^11.8.0"
+  },
+  "devDependencies": {
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.4",
+    "electron-is-dev": "^2.0.0",
+    "concurrently": "^8.2.0",
+    "wait-on": "^7.0.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "build": {
+    "appId": "com.simpleos.docs",
+    "productName": "SimpleOS Docs Viewer",
+    "files": [
+      "public/**/*",
+      "build/**/*",
+      "docs/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "public/assets"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "public/assets/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "SimpleOS Docs Viewer"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "public/assets/icon.png",
+      "category": "Documentation"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "public/assets/icon.png"
+    }
+  }
+}
