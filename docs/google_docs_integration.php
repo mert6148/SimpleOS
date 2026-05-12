@@ -16,12 +16,41 @@ class GoogleDocsIntegration {
     private $clientSecret;
     private $tokenFile;
     private $cacheDir;
+    /** Chromium / gömülü tarayıcı için ek seçenekler */
+    private $chromium;
+
+    /**
+     * Chromium istemcileri için önerilen yapılandırma şablonu (PHP tarafı).
+     *
+     * @param array $overrides İstemci kimliği, klasör ID vb.
+     * @return array
+     */
+    public static function chromiumConfigTemplate($overrides = []) {
+        $httpVer = defined('CURL_HTTP_VERSION_2TLS')
+            ? CURL_HTTP_VERSION_2TLS
+            : CURL_HTTP_VERSION_1_1;
+        $base = [
+            'user_agent_suffix' => 'SimpleOS-DocsViewer/1.0',
+            'default_export_format' => 'html',
+            'drive_query_page_size' => 100,
+            'curl_http_version' => $httpVer,
+        ];
+        return array_merge($base, $overrides);
+    }
+
+    /** Chromium şablonu ile birleştirilmiş seçenekler (geliştirme / hata ayıklama). */
+    public function getChromiumConfig() {
+        return $this->chromium;
+    }
     
     public function __construct($config = []) {
         $this->clientId = $config['client_id'] ?? $_ENV['GOOGLE_CLIENT_ID'] ?? '';
         $this->clientSecret = $config['client_secret'] ?? $_ENV['GOOGLE_CLIENT_SECRET'] ?? '';
         $this->tokenFile = $config['token_file'] ?? sys_get_temp_dir() . '/google_docs_token.json';
         $this->cacheDir = $config['cache_dir'] ?? __DIR__ . '/cache';
+        $this->chromium = isset($config['chromium']) && is_array($config['chromium'])
+            ? array_merge(self::chromiumConfigTemplate(), $config['chromium'])
+            : self::chromiumConfigTemplate();
         
         @mkdir($this->cacheDir, 0755, true);
         

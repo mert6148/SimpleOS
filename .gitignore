@@ -1,45 +1,253 @@
-## SimpleOS
+## SimpleOS - Comprehensive .gitignore
 
-# Ortam dosyaları
+# ============================================================================
+# ENVIRONMENT & CONFIGURATION
+# ============================================================================
 .env
-.env.*
+.env.local
+.env.*.local
 !.env.example
+.env.production.local
 
-# Derleme çıktıları
+# ============================================================================
+# BUILD & COMPILATION OUTPUT
+# ============================================================================
+# Object files
 *.o
 *.obj
+*.gch
+*.pch
+
+# Executable files
+*.exe
+*.out
+*.app
 *.elf
-*.iso
-*.map
+*.bin
+*.hex
+
+# Libraries
 *.a
 *.lib
+*.la
+*.so
+*.so.*
 *.dll
-*.exe
+*.dylib
 
+# ISO images
+*.iso
+*.img
+
+# Map files & debug symbols
+*.map
+*.sym
+*.dSYM/
+
+# Compiled binaries
+/build/
+/dist/
+*.bin
+kernel/simpleos.elf
+
+# ============================================================================
+# BUILD DIRECTORIES & CMake
+# ============================================================================
+CMakeFiles/
+CMakeScripts/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+CPackConfig.cmake
+CPackSourceConfig.cmake
+Testing/
+.cache/
+compile_commands.json
+
+# ============================================================================
+# QEMU & EMULATION
+# ============================================================================
+*.qcow2
+qemu_logs/
+*.monitor
+
+# ============================================================================
+# PROJECT SPECIFIC
+# ============================================================================
 # Kernel ISO staging
 iso/
+kernel/simpleos.elf
+kernel/kernel.bin
 
-# CMake / build dizinleri
-build/
-.cache/
-
-# Linux alt proje araç çıktıları
+# Linux sub-project
 linux/bin/
+linux/obj/
 
-# Loglar
-logs/
-*.log
+# Generated documentation
+docs/html/
+docs/latex/
 
-# Node/Electron
+# ============================================================================
+# NODE.JS & FRONTEND
+# ============================================================================
 node_modules/
 npm-debug.log*
+npm-error.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
 
-# OS / IDE
-.DS_Store
-Thumbs.db
+# Frontend builds
+simpleos/build/
+simpleos/dist/
+simpleos/.env.local
+simpleos/.env.*.local
+
+# ============================================================================
+# PYTHON
+# ============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.venv/
+venv/
+ENV/
+env/
+
+# ============================================================================
+# LOGGING & RUNTIME
+# ============================================================================
+logs/
+*.log
+*.log.*
+log/
+*.trace
+*.swp
+*.swo
+*~
+.tmp/
+tmp/
+
+# ============================================================================
+# TESTING
+# ============================================================================
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+test-results/
+.pytest_cache/
+ctest_build/
+
+# ============================================================================
+# IDE & EDITOR
+# ============================================================================
+# VS Code
 .vscode/
+*.code-workspace
+.history/
+
+# JetBrains
 .idea/
+*.iml
+*.iws
+*.ipr
+.gradle/
+out/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Visual Studio
+.vs/
+.vscode_settings
+*.sln.docstates
+
+# Vim
+*.swp
+*.swo
+*~
+.vim/
+
+# Emacs
+*~
+.#*
+
+# ============================================================================
+# OS SPECIFIC
+# ============================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+.AppleDB
+.AppleDesktop
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+.directory
+.Trash-*
+
+# ============================================================================
+# PACKAGE MANAGERS
+# ============================================================================
+.npm/
+.eslintcache
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ============================================================================
+# DOCKER
+# ============================================================================
+.dockerignore
+docker-compose.override.yml
+
+# ============================================================================
+# MISC
+# ============================================================================
+*.backup
+*.bak
+*.orig
+*.rej
+.DS_Store
+.project
+.pydevproject
+.settings/
+*.sublime-project
+*.sublime-workspace
 

@@ -18,11 +18,15 @@ class GoogleDriveIntegration {
     private $accessToken;
     private $refreshToken;
     private $tokenFile;
+    /** OAuth redirect URI (Chromium / yerel PHP callback ile uyumlu) */
+    private $redirectUri;
     
     public function __construct($config = []) {
         $this->clientId = $config['client_id'] ?? $_ENV['GOOGLE_CLIENT_ID'] ?? '';
         $this->clientSecret = $config['client_secret'] ?? $_ENV['GOOGLE_CLIENT_SECRET'] ?? '';
         $this->tokenFile = $config['token_file'] ?? sys_get_temp_dir() . '/google_token.json';
+        $defaultRedirect = $_ENV['GOOGLE_REDIRECT_URI'] ?? 'http://localhost:8000/google_callback.php';
+        $this->redirectUri = $config['redirect_uri'] ?? $defaultRedirect;
         
         if (file_exists($this->tokenFile)) {
             $this->loadTokens();
@@ -40,7 +44,7 @@ class GoogleDriveIntegration {
         
         $params = [
             'client_id' => $this->clientId,
-            'redirect_uri' => 'http://localhost:8000/google_callback.php',
+            'redirect_uri' => $this->redirectUri,
             'response_type' => 'code',
             'scope' => implode(' ', $scopes),
             'access_type' => 'offline',
@@ -59,7 +63,7 @@ class GoogleDriveIntegration {
             'client_secret' => $this->clientSecret,
             'code' => $code,
             'grant_type' => 'authorization_code',
-            'redirect_uri' => 'http://localhost:8000/google_callback.php'
+            'redirect_uri' => $this->redirectUri
         ];
         
         $ch = curl_init();

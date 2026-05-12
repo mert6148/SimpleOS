@@ -530,6 +530,104 @@ YAML;
 }
 
 /**
+ * Chromium / Chrome / WebView2 tabanlı istemciler için yapılandırma ve yollar
+ */
+class ChromiumServices {
+    /**
+     * chromium_app.js ile eşleşen istemci yapılandırması (JSON API çıktısı).
+     *
+     * @param array $env Üzerine yazılacak anahtarlar (ör. api_base_url)
+     * @return array
+     */
+    public function getClientConfigForApi($env = []) {
+        $phpBase = $env['php_base_url'] ?? getenv('SIMPLEOS_PHP_BASE_URL') ?: 'http://127.0.0.1:8000';
+        $apiUrl = rtrim($phpBase, '/') . '/api';
+
+        $client = [
+            'apiUrl' => $apiUrl,
+            'phpBaseUrl' => $phpBase,
+            'cacheEnabled' => true,
+            'cacheExpiryMs' => 3600000,
+            'google' => [
+                'docsFolderId' => getenv('GOOGLE_DOCS_FOLDER_ID') ?: '',
+                'defaultExportFormat' => 'html',
+                'sheetDefaultName' => 'Sheet1',
+            ],
+            'features' => [
+                'useElectronIpc' => true,
+                'fetchRemoteConfigOnStart' => false,
+                'remoteConfigPath' => '/platform_services.php/chromium-config',
+            ],
+        ];
+
+        if (!empty($env['google_docs_folder_id'])) {
+            $client['google']['docsFolderId'] = $env['google_docs_folder_id'];
+        }
+
+        return [
+            'client' => array_replace_recursive($client, $env['client_overrides'] ?? []),
+            'oauth' => [
+                'redirect_uri' => getenv('GOOGLE_REDIRECT_URI') ?: ($phpBase . '/google_callback.php'),
+                'scopes_hint' => [
+                    'https://www.googleapis.com/auth/drive.readonly',
+                    'https://www.googleapis.com/auth/documents.readonly',
+                    'https://www.googleapis.com/auth/spreadsheets.readonly',
+                ],
+            ],
+            'paths' => $this->getChromiumExecutableHints(),
+        ];
+    }
+
+    /**
+     * Yaygın Chromium kurulum yolları (otomasyon / dokümantasyon için).
+     *
+     * @return array
+     */
+    public function getChromiumExecutableHints() {
+        $os = PlatformDetector::getOS();
+        $hints = ['os' => $os, 'candidates' => []];
+
+        if ($os === 'windows') {
+            $pf = getenv('ProgramFiles') ?: 'C:\\Program Files';
+            $pfx86 = getenv('ProgramFiles(x86)') ?: 'C:\\Program Files (x86)';
+            $hints['candidates'] = [
+                $pf . '\\Google\\Chrome\\Application\\chrome.exe',
+                $pfx86 . '\\Google\\Chrome\\Application\\chrome.exe',
+                $pf . '\\Microsoft\\Edge\\Application\\msedge.exe',
+                getenv('LOCALAPPDATA') . '\\Google\\Chrome\\Application\\chrome.exe',
+            ];
+        } elseif ($os === 'linux') {
+            $hints['candidates'] = [
+                '/usr/bin/chromium',
+                '/usr/bin/chromium-browser',
+                '/usr/bin/google-chrome',
+                '/snap/bin/chromium',
+            ];
+        } elseif ($os === 'macos') {
+            $hints['candidates'] = [
+                '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+                '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
+                '/Applications/Chromium.app/Contents/MacOS/Chromium',
+            ];
+        }
+
+        return $hints;
+    }
+
+    /**
+     * Chromium politikaları için örnek JSON (Enterprise / MDM — referans).
+     */
+    public function getPoliciesSnippetReference() {
+        return [
+            '_comment' => 'Örnek: Windows GP veya Linux policy dosyası ile dağıtım',
+            'BrowserSwitcherEnabled' => false,
+            'DefaultPopupsSetting' => 1,
+            'ExtensionInstallForcelist' => [],
+        ];
+    }
+}
+
+/**
  * Cross-platform service manager
  */
 class CrossPlatformServiceManager {
@@ -537,12 +635,14 @@ class CrossPlatformServiceManager {
     private $windows;
     private $linux;
     private $google;
+    private $chromium;
     
     public function __construct() {
         $this->platform = PlatformDetector::getOS();
         $this->windows = new WindowsServices();
         $this->linux = new LinuxServices();
         $this->google = new GoogleCloudServices();
+        $this->chromium = new ChromiumServices();
     }
     
     /**
@@ -667,6 +767,10 @@ class CrossPlatformServiceManager {
             'cloud_storage' => $this->google->createGCSConfig(),
             'pub_sub' => $this->google->createPubSubConfig()
         ];
+
+        $config['chromium'] = $this->chromium->getClientConfigForApi([
+            'php_base_url' => getenv('SIMPLEOS_PHP_BASE_URL') ?: null,
+        ]);
         
         return $config;
     }
@@ -696,6 +800,15 @@ class PlatformServicesAPI {
                 
             case 'platform-config':
                 echo json_encode($this->manager->getPlatformConfig(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                break;
+
+            case 'chromium-config':
+                $chromium = new ChromiumServices();
+                $payload = $chromium->getClientConfigForApi([
+                    'php_base_url' => getenv('SIMPLEOS_PHP_BASE_URL') ?: null,
+                    'google_docs_folder_id' => getenv('GOOGLE_DOCS_FOLDER_ID') ?: null,
+                ]);
+                echo json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
                 break;
                 
             case 'install-service':

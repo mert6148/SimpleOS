@@ -17,8 +17,154 @@ let appState = {
     apiUrl: 'http://127.0.0.1:8000/api',
     googleConfig: {},
     syncStatus: 'idle',
-    recentDocs: JSON.parse(localStorage.getItem('recentDocs') || '[]')
+    recentDocs: JSON.parse(localStorage.getItem('recentDocs') || '[]'),
+    chromiumRuntime: null
 };
+
+// ============================================================
+// Chromium sistem yapılandırması (WebView / Chromium / Electron)
+// ============================================================
+
+const CHROMIUM_CONFIG_DEFAULTS = Object.freeze({
+    apiUrl: 'http://127.0.0.1:8000/api',
+    cacheEnabled: true,
+    cacheExpiryMs: 3600000,
+    google: {
+        docsFolderId: '',
+        defaultExportFormat: 'html',
+        sheetDefaultName: 'Sheet1'
+    },
+    /** Yerel PHP sunucusu kökü (OAuth callback vb. için bilgi amaçlı) */
+    phpBaseUrl: 'http://127.0.0.1:8000',
+    features: {
+        useElectronIpc: true,
+        fetchRemoteConfigOnStart: false,
+        remoteConfigPath: '/platform_services.php/chromium-config'
+    }
+});
+
+function mergeDeep(target, source) {
+    const out = Array.isArray(target) ? [...target] : { ...target };
+    if (!source || typeof source !== 'object') return out;
+    for (const key of Object.keys(source)) {
+        const sv = source[key];
+        const tv = out[key];
+        if (sv && typeof sv === 'object' && !Array.isArray(sv)) {
+            const base = tv && typeof tv === 'object' && !Array.isArray(tv) ? tv : {};
+            out[key] = mergeDeep(base, sv);
+        } else if (Array.isArray(sv)) {
+            out[key] = [...sv];
+        } else {
+            out[key] = sv;
+        }
+    }
+    return out;
+}
+
+/**
+ * Chromium tabanlı ortam tespiti (Chrome, Edge Chromium, Electron, WebView2).
+ */
+function detectChromiumRuntime() {
+    const ua = typeof navigator !== 'undefined' ? navigator.userAgent || '' : '';
+    const isEdgeChromium = /\sEdg\//.test(ua);
+    const isChromeFamily = /\sChrome\//.test(ua) || isEdgeChromium;
+    const isOpera = /\sOPR\//.test(ua) || /\sOpera\//.test(ua);
+    const isChromium = isChromeFamily && !isOpera;
+    const isElectron = typeof window !== 'undefined' && !!window.electron;
+    let webviewTag = false;
+    try {
+        webviewTag = typeof document !== 'undefined' && !!document.querySelector('webview');
+    } catch {
+        webviewTag = false;
+    }
+    return {
+        isChromium,
+        isElectron,
+        isWebView2: typeof navigator !== 'undefined' && /WebView2/i.test(ua),
+        webviewTag,
+        userAgent: ua,
+        platform: typeof navigator !== 'undefined' ? navigator.platform : ''
+    };
+}
+
+function loadChromiumConfigFromStorage() {
+    try {
+        const raw = localStorage.getItem('simpleos_chromium_config');
+        if (!raw) {
+            return mergeDeep({}, CHROMIUM_CONFIG_DEFAULTS);
+        }
+        const parsed = JSON.parse(raw);
+        return mergeDeep(CHROMIUM_CONFIG_DEFAULTS, parsed);
+    } catch {
+        return mergeDeep({}, CHROMIUM_CONFIG_DEFAULTS);
+    }
+}
+
+function persistChromiumConfig(partial) {
+    const current = loadChromiumConfigFromStorage();
+    const next = mergeDeep(current, partial);
+    localStorage.setItem('simpleos_chromium_config', JSON.stringify(next));
+    return next;
+}
+
+/**
+ * appState ve istemci önbellek ayarlarını Chromium yapılandırmasıyla senkronize eder.
+ */
+function applyChromiumConfig(cfg, apiClientInstance) {
+    appState.apiUrl = cfg.apiUrl;
+    appState.cacheEnabled = cfg.cacheEnabled !== false;
+    appState.googleConfig = cfg.google || {};
+    if (apiClientInstance && typeof apiClientInstance.setBaseUrl === 'function') {
+        apiClientInstance.setBaseUrl(cfg.apiUrl);
+    }
+    if (apiClientInstance && typeof cfg.cacheExpiryMs === 'number') {
+        apiClientInstance.cacheExpiry = cfg.cacheExpiryMs;
+    }
+}
+
+/**
+ * PHP platform_services üzerinden sunucu tarafı Chromium/config birleşimi.
+ */
+async function fetchRemoteChromiumConfig(baseUrl, path) {
+    const origin = baseUrl.replace(/\/api\/?$/, '');
+    const url = `${origin}${path.startsWith('/') ? path : '/' + path}`;
+    const res = await fetch(url, { headers: { Accept: 'application/json' } });
+    if (!res.ok) throw new Error(`Config HTTP ${res.status}`);
+    return res.json();
+}
+
+async function bootstrapChromiumConfig(apiClientInstance) {
+    const local = loadChromiumConfigFromStorage();
+    applyChromiumConfig(local, apiClientInstance);
+    appState.chromiumRuntime = detectChromiumRuntime();
+
+    if (!local.features?.fetchRemoteConfigOnStart) {
+        return local;
+    }
+
+    try {
+        const remotePath = local.features.remoteConfigPath || '/platform_services.php/chromium-config';
+        const remote = await fetchRemoteChromiumConfig(local.apiUrl, remotePath);
+        if (remote && typeof remote === 'object') {
+            const merged = mergeDeep(local, remote.client || remote);
+            persistChromiumConfig(merged);
+            applyChromiumConfig(merged, apiClientInstance);
+            return merged;
+        }
+    } catch (e) {
+        console.warn('[ChromiumConfig] Uzak yapılandırma alınamadı, yerel ayarlar kullanılıyor:', e.message);
+    }
+    return local;
+}
+
+// İlk yükleme: yerel Chromium ayarlarını uygula (apiUrl vb.)
+(function initChromiumAppStateFromStorage() {
+    const cfg = loadChromiumConfigFromStorage();
+    appState.apiUrl = cfg.apiUrl;
+    appState.cacheEnabled = cfg.cacheEnabled !== false;
+    appState.googleConfig = cfg.google || {};
+    appState.chromiumRuntime = detectChromiumRuntime();
+})();
 
 // ============================================================
 // API Client
@@ -28,7 +174,13 @@ class ChromiumAPIClient {
     constructor(baseUrl) {
         this.baseUrl = baseUrl;
         this.cache = new Map();
-        this.cacheExpiry = 3600000; // 1 hour
+        const stored = loadChromiumConfigFromStorage();
+        this.cacheExpiry = typeof stored.cacheExpiryMs === 'number' ? stored.cacheExpiryMs : 3600000;
+    }
+
+    setBaseUrl(baseUrl) {
+        this.baseUrl = baseUrl;
+        this.clearCache();
     }
 
     async request(endpoint, options = {}) {
@@ -588,7 +740,9 @@ function toggleDarkMode() {
 // Initialization
 // ============================================================
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    await bootstrapChromiumConfig(apiClient);
+
     // Initialize components
     window.documentViewer = new DocumentViewer();
     window.googlePanel = new GoogleIntegrationPanel();
@@ -644,7 +798,12 @@ if (window.electron) {
             e.preventDefault();
             appState.apiUrl = document.getElementById('api-url').value;
             appState.cacheEnabled = document.getElementById('cache-enabled').checked;
-            
+            persistChromiumConfig({
+                apiUrl: appState.apiUrl,
+                cacheEnabled: appState.cacheEnabled
+            });
+            applyChromiumConfig(loadChromiumConfigFromStorage(), apiClient);
+
             window.electron.ipcRenderer.invoke('update-config', {
                 apiUrl: appState.apiUrl,
                 cacheEnabled: appState.cacheEnabled
