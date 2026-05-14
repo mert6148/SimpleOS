@@ -8,6 +8,7 @@
 #include "mm.h"
 #include "fs.h"
 #include "driver.h"
+#include "programs.h"
 #include <stdarg.h>
 #include <stdio.h>
 
@@ -118,63 +119,12 @@ void kernel_main(u32 magic, u32 mbinfo) {
 }
 
 /* ============================================================================
- * INIT TASK - Program executed by first user task
- * =========================================================================== */
-
-void init_task(void) {
-    printk("\n[INIT] Init task started (PID %d)\n", 
-           sched_get_current()->pid);
-    
-    /* Create some example child tasks */
-    printk("[INIT] Creating child tasks...\n");
-    
-    task_create(&worker_task_1, SCHED_PRIORITY_NORMAL);
-    task_create(&worker_task_2, SCHED_PRIORITY_HIGH);
-    
-    printk("[INIT] Child tasks created, yielding CPU...\n");
-    
-    /* Wait for a while */
-    for (u32 i = 0; i < 1000000000; i++) {
-        asm volatile("nop");
-    }
-    
-    printk("[INIT] Init task exiting\n");
-    task_exit(0);
-}
-
-void worker_task_1(void) {
-    task_t *current = sched_get_current();
-    printk("[WORKER-1] Task started (PID %d, priority %d)\n",
-           current->pid, current->priority);
-    
-    for (int i = 0; i < 5; i++) {
-        printk("[WORKER-1] Iteration %d\n", i);
-        sched_yield();
-    }
-    
-    printk("[WORKER-1] Task exiting\n");
-    task_exit(0);
-}
-
-void worker_task_2(void) {
-    task_t *current = sched_get_current();
-    printk("[WORKER-2] Task started (PID %d, priority %d)\n",
-           current->pid, current->priority);
-    
-    for (int i = 0; i < 5; i++) {
-        printk("[WORKER-2] Iteration %d\n", i);
-        sched_yield();
-    }
-    
-    printk("[WORKER-2] Task exiting\n");
-    task_exit(0);
-}
-
-/* ============================================================================
  * ERROR HANDLING
  * =========================================================================== */
 
 void kernel_panic(const char *fmt, ...) {
+    char panic_buf[512];
+
     printk("\n");
     printk("╔════════════════════════════════════════════════════════════╗\n");
     printk("║                   KERNEL PANIC!                           ║\n");
@@ -182,10 +132,10 @@ void kernel_panic(const char *fmt, ...) {
     
     va_list args;
     va_start(args, fmt);
-    vsnprintf(buffer, sizeof(buffer), fmt, args);
+    vsnprintf(panic_buf, sizeof(panic_buf), fmt, args);
     va_end(args);
     
-    printk("Error: %s\n", buffer);
+    printk("Error: %s\n", panic_buf);
     
     /* Hang system */
     printk("System halted.\n");

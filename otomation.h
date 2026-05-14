@@ -1,6 +1,6 @@
 /**
  * SimpleOS Otomasyon Sistemi
- * otomasyon.h — Genel tanımlar, yapılar, sabitler
+ * otomation.h — Genel tanımlar, yapılar, sabitler
  *
  * Kaynak dosyaların hatalı kısımlarından türetilen
  * temiz, derlenebilir C99 başlık dosyası.
@@ -20,13 +20,14 @@
 #include <stdbool.h>
 #include <time.h>
 #include <errno.h>
+#include <stdarg.h>
 
 #ifdef _WIN32
   #include <windows.h>
-  #define PLATFORM_UYKU_MS(ms) Sleep(ms)
+  #define PLATFORM_UYKU_MS(ms) Sleep((DWORD)(ms))
 #else
   #include <unistd.h>
-  #define PLATFORM_UYKU_MS(ms) usleep((useconds_t)(ms) * 1000u)
+  #define PLATFORM_UYKU_MS(ms) usleep((unsigned)(ms) * 1000u)
 #endif
 
 /* ─── Versiyon ──────────────────────────────────────────── */
@@ -77,7 +78,7 @@ typedef enum {
 typedef struct {
     DugumTipi   tip;
     char        deger[OT_MAKS_DEGER_UZUNLUGU];
-    char        ham[OT_MAKS_DEGER_UZUNLUGU];   /* raw */
+    char        ham[OT_MAKS_DEGER_UZUNLUGU]; /* ham / raw */
     uint32_t    satir;
     uint32_t    sutun;
 } DegerDugumu;
@@ -152,6 +153,9 @@ void kesir_baslat(KesirDeger *kd, int32_t pay, int32_t payda);
 OtHataKodu kesir_ata_metin(KesirDeger *kd, const char *metin);
 double kesir_ondalik_al(const KesirDeger *kd);
 void kesir_yazdir(const KesirDeger *kd, FILE *akis);
+
+/* os_docs.c — örnek çıktı (KOMUT_YAZDIR ile entegre) */
+void os_docs_yazdir_demo(FILE *akis);
 
 /* os_docs.c → komut sistemi */
 KomutTipi komut_cozumle(const char *metin);

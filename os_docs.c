@@ -1,94 +1,78 @@
-#include <iosteam>
-#include <config>
-#include <set>
-use namespace std;
+/**
+ * os_docs — otomasyon motoru ile entegre örnek komut hattı aracı.
+ * Eski hatalı C++ benzeri taslak yerine C99; otomation.h API kullanır.
+ */
 
-int os(quick)
+#include "otomation.h"
+#include <stdio.h>
+#include <string.h>
+
+static const char *const g_os_docs_demo[] = {
+    "apple",
+    "banana",
+    "cherry",
+};
+
+void os_docs_yazdir_demo(FILE *akis)
 {
-    foreach (auto &item : quick)
-    {
-        cout << item << endl;
-    }
+    FILE *out = akis ? akis : stdout;
+    size_t i;
+    size_t n = sizeof(g_os_docs_demo) / sizeof(g_os_docs_demo[0]);
+    for (i = 0; i < n; i++)
+        fprintf(out, "%s\n", g_os_docs_demo[i]);
 }
 
-int setup()
+static void kullanim(FILE *out, const char *prog)
 {
-    set<string> quick = {"apple", "banana", "cherry"};
-    if (command == "print")
-    {
-        exit(os(quick));
+    fprintf(out,
+            "Kullanim: %s <komut> [arguman]\n"
+            "  Komutlar: print yazdir | exit cikis | start basla | stop dur | "
+            "pause durakla | resume devam\n"
+            "Ornek: %s print\n",
+            prog, prog);
+}
+
+static OtHataKodu tek_satir_calistir(const char *komut, const char *arg)
+{
+    OtomasyonAyarlari ay = {0u, 10u, false, false, NULL};
+    OtomasyonMotoru mot;
+    OtHataKodu st;
+
+    st = otomasyon_baslat(&mot, &ay);
+    if (st != OT_BASARILI)
+        return st;
+    st = otomasyon_komut_ekle(&mot, komut, arg ? arg : "", 0u);
+    if (st != OT_BASARILI) {
+        otomasyon_temizle(&mot);
+        return st;
     }
-    else if (case "exit")
-    {
-        try
-        {
-            exit(0);
-        }
-        catch(exception & e)
-        {
-            cerr << "Error: " << e.what() << endl;
-            return 1;
-        }
-    }
-    else
-    {
-        cerr << "Unknown command: " << command << endl;
+    st = otomasyon_calistir(&mot);
+    otomasyon_temizle(&mot);
+    return st;
+}
+
+int main(int argc, char **argv)
+{
+    const char *prog = (argc > 0 && argv[0]) ? argv[0] : "os_docs";
+
+    if (argc < 2) {
+        kullanim(stderr, prog);
         return 1;
     }
 
-default:
-    cerr << "Invalid command: " << command << endl;
-    return 1;
-}
-
-int start(alignas(16))
-{
-    string command;
-    cout << "Enter command (print/exit): ";
-    cin >> command;
-    return setup(command);
-}
-
-int stop(alignas(16))
-{
-    cout << "Stopping the application..." << endl;
-    return 0;
-}
-
-int async()
-{
-    std::thread t1(start);
-    std::thread t2(stop);
-
-    if (command == "start")
-    {
-        t1.join();
+    if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
+        kullanim(stdout, prog);
+        return 0;
     }
-    else if (command == "stop")
+
     {
-        t2.join();
-    }
-    else
-    {
-        try
-        {
-            throw invalid_argument("Invalid command");
-        }
-        catch(const exception &e)
-        {
-            cerr << "Error: " << e.what() << endl;
+        const char *arg = (argc >= 3) ? argv[2] : "";
+        OtHataKodu st = tek_satir_calistir(argv[1], arg);
+        if (st != OT_BASARILI) {
+            fprintf(stderr, "Hata: %s\n", hata_acikla(st));
             return 1;
         }
     }
 
-    try
-    {
-        double result = 10.0 / 0.0; // This will cause a runtime error
-        cout << "Result: " << result << endl;
-    }
-    catch(const exception &e)
-    {
-        thread_local string errorMessage = e.what();
-        cerr << "Runtime error: " << errorMessage << endl;
-    }
+    return 0;
 }

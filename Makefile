@@ -18,13 +18,19 @@ LDFLAGS     := -T kernel/arch/$(ARCH)/link.ld -nostdlib
 KERNEL_NAME := simpleos.elf
 ISO_NAME    := simpleos.iso
 
+# Gelistirici makinesi: otomasyon + os_docs host araci (cekirdekten bagimsiz)
+HOST_CC     ?= gcc
+OS_DOCS_BIN := os_docs_tool
+HOST_TOOL_SRC := otomation.c os_docs.c
+
 # ============================================================================
 # SOURCE FILES
 # ============================================================================
 
 # Core kernel sources
 CORE_SRC    := kernel/core/kmain.c \
-               kernel/core/sched.c
+               kernel/core/sched.c \
+               kernel/programs/demo_tasks.c
 
 # Architecture-specific sources
 ARCH_SRC    := kernel/arch/$(ARCH)/boot.S \
@@ -148,6 +154,7 @@ clean:
 	find . -name "*.elf" -delete
 	find . -name "*.iso" -delete
 	rm -rf iso/
+	rm -f $(OS_DOCS_BIN) $(OS_DOCS_BIN).exe
 	@echo "✓ Cleaned"
 
 distclean: clean
@@ -155,4 +162,10 @@ distclean: clean
 	rm -rf build/ docs/html/
 	@echo "✓ Distribution clean"
 
-.PHONY: all iso qemu qemu-iso debug release analyze docs symbols disasm memmap clean distclean
+# Otomasyon / dokuman komut satiri araci (Windows'ta MinGW/MSYS2 gcc ile)
+os_docs_tool: $(HOST_TOOL_SRC)
+	@echo "[HOST] $(OS_DOCS_BIN) derleniyor..."
+	$(HOST_CC) -std=c99 -Wall -Wextra -O2 -o $(OS_DOCS_BIN) $(HOST_TOOL_SRC)
+	@echo "✓ $(OS_DOCS_BIN) hazir (ornek: ./$(OS_DOCS_BIN) print)"
+
+.PHONY: all iso qemu qemu-iso debug release analyze docs symbols disasm memmap clean distclean os_docs_tool
