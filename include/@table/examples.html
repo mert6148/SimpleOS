@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleOS Table Bileşeni - Örnekler</title>
+    <link rel="stylesheet" href="./styles/table.css">
+    <link rel="stylesheet" href="./styles/table-dark.css">
+    <link rel="stylesheet" href="./styles/table-animations.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .examples {
+            display: grid;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .example {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .example h2 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 18px;
+            border-bottom: 2px solid #2196F3;
+            padding-bottom: 10px;
+        }
+
+        .example p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .code-block {
+            background: #f5f5f5;
+            padding: 12px;
+            border-left: 3px solid #2196F3;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 12px;
+            color: #333;
+            border-radius: 4px;
+        }
+
+        #table-basic,
+        #table-advanced,
+        #table-dark,
+        #table-export {
+            margin-top: 15px;
+        }
+
+        .toggle-theme {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .theme-btn {
+            padding: 10px 20px;
+            border: none;
+            background: #2196F3;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .theme-btn:hover {
+            background: #1976D2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+        }
+
+        .theme-btn:active {
+            transform: translateY(0);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0;
+            font-size: 12px;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .feature-list li {
+            background: #f0f7ff;
+            padding: 10px;
+            border-left: 3px solid #2196F3;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .footer a {
+            color: #2196F3;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>📊 SimpleOS Table Bileşeni</h1>
+        <p class="subtitle">Modern, otomasyonlu ve hızlı tablo bileşeni</p>
+
+        <div class="toggle-theme">
+            <button class="theme-btn" onclick="toggleTheme()">🌙 Koyu Tema Aç</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>5+</h3>
+                <p>Örnek Tablo</p>
+            </div>
+            <div class="stat-card">
+                <h3>∞</h3>
+                <p>Satır Sayısı</p>
+            </div>
+            <div class="stat-card">
+                <h3>100%</h3>
+                <p>Responsive</p>
+            </div>
+            <div class="stat-card">
+                <h3>⚡</h3>
+                <p>Hızlı</p>
+            </div>
+        </div>
+
+        <div class="examples">
+            <!-- Temel Tablo Örneği -->
+            <div class="example">
+                <h2>1. Temel Tablo</h2>
+                <p>En basit tablo kullanımı. Veri ve sütunları tanımlayıp oluşturuyoruz.</p>
+                <div class="code-block">
+                    const table = new Table("#table-basic", columns, data, {
+                    caption: "Temel Tablo Örneği",
+                    pageSize: 5
+                    });
+                </div>
+                <div id="table-basic"></div>
+            </div>
+
+            <!-- Gelişmiş Özellikler -->
+            <div class="example">
+                <h2>2. Gelişmiş Özellikler</h2>
+                <p>Sıralama, sayfalama, seçim ve arama özelliklerini içeren tablo.</p>
+                <div class="code-block">
+                    const table = new Table("#table-advanced", columns, data, {
+                    sortable: true,
+                    selectable: true,
+                    searchable: true,
+                    pageSize: 10,
+                    caption: "Gelişmiş Tablo"
+                    });
+                </div>
+                <div id="table-advanced"></div>
+            </div>
+
+            <!-- Koyu Tema -->
+            <div class="example" id="dark-example">
+                <h2>3. Koyu Tema</h2>
+                <p>Koyu tema desteği ile göz yormayan tasarım.</p>
+                <div class="code-block">
+                    const table = new Table("#table-dark", columns, data, {
+                    theme: "dark",
+                    pageSize: 5
+                    });
+                </div>
+                <div id="table-dark"></div>
+            </div>
+
+            <!-- Dışa Aktarma -->
+            <div class="example">
+                <h2>4. CSV/JSON Dışa Aktarma</h2>
+                <p>Tablo verilerini CSV veya JSON formatında indirebilirsiniz.</p>
+                <div class="code-block">
+                    const table = new Table("#table-export", columns, data, {
+                    exportable: true,
+                    pageSize: 5,
+                    caption: "Dışa Aktarılabilir Tablo"
+                    });
+                </div>
+                <div id="table-export"></div>
+            </div>
+
+            <!-- Sütun Filtreleme -->
+            <div class="example">
+                <h2>5. Sütun Gizleme/Gösterme</h2>
+                <p>Kullanıcılar sütunları seçerek gösterebilir veya gizleyebilir.</p>
+                <div class="code-block">
+                    const table = new Table("#table-filter", columns, data, {
+                    columnHideable: true,
+                    pageSize: 5,
+                    caption: "Filtrelenebilir Sütunlar"
+                    });
+                </div>
+                <div id="table-filter"></div>
+            </div>
+        </div>
+
+        <div class="example">
+            <h2>📚 Desteklenen Özellikler</h2>
+            <ul class="feature-list">
+                <li>✓ Satır seçimi</li>
+                <li>✓ Sıralama</li>
+                <li>✓ Sayfalama</li>
+                <li>✓ Arama</li>
+                <li>✓ Filtreleme</li>
+                <li>✓ CSV/JSON dışa aktarma</li>
+                <li>✓ Koyu/Açık tema</li>
+                <li>✓ Responsive tasarım</li>
+                <li>✓ Özel hücre render</li>
+                <li>✓ Animasyonlar</li>
+                <li>✓ Tüm cihazlarda çalışır</li>
+                <li>✓ Erişilebilirlik</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p><strong>SimpleOS Table Bileşeni</strong> - Güçlü ve kolay kullanılabilir veri tabloları</p>
+            <p style="margin-top: 10px; font-size: 12px;">
+                Türkçe özelleştirmeler ve iyileştirmeler desteğiyle geliştirilmiştir.
+            </p>
+        </div>
+    </div>
+
+    <script src="./src/main.js"></script>
+    <script>
+        // Örnek veri
+        const sampleData = [
+            { id: 1, name: "Ali Demir", email: "ali@example.com", department: "İnsan Kaynakları", salary: 45000, joinDate: "2022-01-15" },
+            { id: 2, name: "Ayşe Yılmaz", email: "ayse@example.com", department: "Yazılım Geliştirme", salary: 55000, joinDate: "2021-03-20" },
+            { id: 3, name: "Mehmet Kaya", email: "mehmet@example.com", department: "Pazarlama", salary: 42000, joinDate: "2022-06-10" },
+            { id: 4, name: "Fatma Şahin", email: "fatma@example.com", department: "Yazılım Geliştirme", salary: 52000, joinDate: "2021-09-05" },
+            { id: 5, name: "Hasan Çetin", email: "hasan@example.com", department: "Operasyon", salary: 38000, joinDate: "2023-01-12" },
+            { id: 6, name: "Zeynep Arslan", email: "zeynep@example.com", department: "Yazılım Geliştirme", salary: 58000, joinDate: "2020-11-25" },
+            { id: 7, name: "Emre Dağ", email: "emre@example.com", department: "İnsan Kaynakları", salary: 44000, joinDate: "2022-04-18" },
+            { id: 8, name: "Elif Kara", email: "elif@example.com", department: "Pazarlama", salary: 43000, joinDate: "2023-02-14" },
+            { id: 9, name: "Mustafa Güzel", email: "mustafa@example.com", department: "Yazılım Geliştirme", salary: 60000, joinDate: "2020-08-01" },
+            { id: 10, name: "Gülçin Aydın", email: "gulcin@example.com", department: "Finans", salary: 48000, joinDate: "2021-12-10" },
+        ];
+
+        const columns = [
+            { key: "id", label: "ID" },
+            { key: "name", label: "Ad Soyad" },
+            { key: "email", label: "E-posta" },
+            { key: "department", label: "Bölüm" },
+            { key: "salary", label: "Maaş", render: (val) => `₺${val.toLocaleString("tr-TR")}` },
+            { key: "joinDate", label: "Başlama Tarihi" },
+        ];
+
+        // 1. Temel Tablo
+        new Table("#table-basic", columns, sampleData, {
+            caption: "Temel Tablo Örneği",
+            pageSize: 5,
+            sortable: true,
+        });
+
+        // 2. Gelişmiş Tablo
+        new Table("#table-advanced", columns, sampleData, {
+            sortable: true,
+            selectable: true,
+            searchable: true,
+            pageSize: 10,
+            caption: "Gelişmiş Tablo - Arama, Seçim ve Sıralama",
+        });
+
+        // 3. Koyu Tema
+        new Table("#table-dark", columns, sampleData, {
+            theme: "dark",
+            pageSize: 5,
+            sortable: true,
+            caption: "Koyu Tema Tablosu",
+        });
+
+        // 4. Dışa Aktarma
+        new Table("#table-export", columns, sampleData, {
+            exportable: true,
+            pageSize: 5,
+            sortable: true,
+            caption: "Dışa Aktarılabilir Tablo",
+        });
+
+        // 5. Sütun Filtreleme
+        new Table("#table-filter", columns, sampleData, {
+            columnHideable: true,
+            pageSize: 5,
+            sortable: true,
+            searchable: true,
+            caption: "Sütun Göster/Gizle Örneği",
+        });
+
+        // Tema değiştirme
+        function toggleTheme() {
+            const darkExample = document.getElementById("dark-example");
+            const btn = document.querySelector(".theme-btn");
+
+            if (darkExample.classList.contains("table-theme-dark")) {
+                darkExample.classList.remove("table-theme-dark");
+                btn.textContent = "🌙 Koyu Tema Aç";
+            } else {
+                darkExample.classList.add("table-theme-dark");
+                btn.textContent = "☀️ Açık Tema Aç";
+            }
+        }
+    </script>
+</body>
+
+</html>

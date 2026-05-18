@@ -1,0 +1,289 @@
+/* SimpleOS Table Component - Animations & Transitions */
+
+/* Fade in animation for table elements */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+/* Table wrapper animations */
+.table-wrapper {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Table header animations */
+.table-component thead th {
+    animation: slideInDown 0.4s ease-out;
+    animation-fill-mode: both;
+}
+
+.table-component thead th:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.table-component thead th:nth-child(2) {
+    animation-delay: 0.05s;
+}
+
+.table-component thead th:nth-child(3) {
+    animation-delay: 0.1s;
+}
+
+.table-component thead th:nth-child(4) {
+    animation-delay: 0.15s;
+}
+
+.table-component thead th:nth-child(5) {
+    animation-delay: 0.2s;
+}
+
+.table-component thead th:nth-child(n+6) {
+    animation-delay: 0.25s;
+}
+
+/* Table body animations */
+.table-component tbody tr {
+    animation: slideInUp 0.3s ease-out;
+    animation-fill-mode: both;
+}
+
+.table-component tbody tr:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.table-component tbody tr:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.table-component tbody tr:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.table-component tbody tr:nth-child(4) {
+    animation-delay: 0.25s;
+}
+
+.table-component tbody tr:nth-child(5) {
+    animation-delay: 0.3s;
+}
+
+.table-component tbody tr:nth-child(n+6) {
+    animation-delay: 0.35s;
+}
+
+/* Sort indicator animation */
+.table-sort-indicator {
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    display: inline-block;
+}
+
+.table-component thead th.sortable:hover .table-sort-indicator {
+    animation: bounce 0.4s ease;
+}
+
+/* Row hover animations */
+.table-component tbody tr {
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.table-component tbody tr:hover {
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Checkbox animations */
+input[type="checkbox"] {
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+input[type="checkbox"]:hover {
+    transform: scale(1.1);
+}
+
+input[type="checkbox"]:checked {
+    animation: bounce 0.3s ease;
+}
+
+/* Button animations */
+.table-export-btn,
+.table-page-button {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.table-export-btn:active,
+.table-page-button:active {
+    transform: scale(0.98);
+}
+
+.table-export-btn::before,
+.table-page-button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, height 0.5s;
+}
+
+.table-export-btn:active::before,
+.table-page-button:active::before {
+    width: 100px;
+    height: 100px;
+}
+
+/* Search input animations */
+.table-search-input {
+    transition: all 0.2s ease;
+}
+
+.table-search-input:focus {
+    transform: translateY(-2px);
+}
+
+/* Pagination animations */
+.table-pagination {
+    animation: slideInUp 0.4s ease-out;
+}
+
+.table-page-button {
+    animation: slideInUp 0.4s ease-out;
+    animation-fill-mode: both;
+}
+
+.table-page-button:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.table-page-button:nth-child(2) {
+    animation-delay: 0.05s;
+}
+
+.table-page-button:nth-child(3) {
+    animation-delay: 0.1s;
+}
+
+.table-page-button:nth-child(4) {
+    animation-delay: 0.15s;
+}
+
+.table-page-button:nth-child(5) {
+    animation-delay: 0.2s;
+}
+
+.table-page-button:nth-child(n+6) {
+    animation-delay: 0.25s;
+}
+
+/* Loading state animation */
+.table-loading {
+    position: relative;
+    opacity: 0.6;
+}
+
+.table-loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #333;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Dark theme animations */
+.table-theme-dark .table-component tbody tr:hover {
+    box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.05);
+}
+
+.table-theme-dark .table-loading::after {
+    border: 2px solid #333;
+    border-top: 2px solid #e0e0e0;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+
+    .table-wrapper,
+    .table-component thead th,
+    .table-component tbody tr,
+    .table-pagination,
+    .table-page-button,
+    .table-search-input,
+    .table-export-btn {
+        animation: none !important;
+        transition: none !important;
+    }
+}
