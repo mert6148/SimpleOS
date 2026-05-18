@@ -1,6 +1,6 @@
 {
     "require": {
-        "phpmailer/phpmailer": "^7.1",
+        "phpmailer/phpmailer": "*",
         "monolog/monolog": "^3.10",
         "wordpressify/wordpressify": "^0.0.2",
         "composer-wordpress/wordpress-packager": "*"
