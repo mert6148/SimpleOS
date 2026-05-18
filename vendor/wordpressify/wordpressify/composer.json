@@ -1,0 +1,31 @@
+{
+  "name": "wordpressify/wordpressify",
+  "description": "Wordpress Utilities",
+  "type": "package",
+  "license": "MIT",
+  "version":"0.0.2",
+  "keywords":[
+    "wordpress"
+  ],
+  "authors":[
+    {
+      "name": "Paolo Falomo",
+      "email": "paolofalomo@gmail.com",
+      "homepage": "https://paolofalomo.it"
+    }
+  ],
+  "autoload":{
+    "psr-4":{
+      "WP\\":"src/"
+    },
+    "files": [
+      "helpers.php"
+    ]
+  },
+  "require": {
+    "php": ">=7.1"
+  },
+  "config": {
+    "sort-packages": true
+  }
+}
