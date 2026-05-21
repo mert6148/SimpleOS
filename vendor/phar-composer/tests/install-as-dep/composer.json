@@ -1,0 +1,20 @@
+{
+    "require": {
+        "symfony/console": "*"
+    },
+    "require-dev": {
+        "clue/phar-composer": "*@dev"
+    },
+    "bin": [
+        "query.php"
+    ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../",
+            "options": {
+                "symlink": false
+            }
+        }
+    ]
+}

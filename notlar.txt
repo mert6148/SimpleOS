@@ -30,3 +30,48 @@ GitHub’daki varsayılan dal master ise şu şekilde gönder:
 
 git branch -M master
 git push -u origin master
+================================================================================
+Seçenek C — TÜM DOSYALARI GITHUB'A ATMAK İÇİN KOMUT SİRASI (GÜNCEL)
+================================================================================
+
+# Adım 1: Çalışma dizinine git
+cd "c:\Users\mertd\OneDrive\Masaüstü\SimpleOS"
+
+# Adım 2: Git durumunu kontrol et
+git status
+
+# Adım 3: Tüm değişiklikleri ekle
+git add .
+
+# Adım 4: Commit oluştur (varsa değişiklikler)
+git commit -m "Push all project files to GitHub"
+
+# Adım 5: Remote doğru mu kontrol et
+git remote -v
+# Çıktı: origin  https://github.com/mert6148/SimpleOS.git (fetch/push) olmalı
+
+# Adım 6: Yerel branch'i main yap (gerekirse)
+git branch -M main
+
+# Adım 7: GitHub'a gönder
+git push -u origin main
+
+# Adım 8: Push başarı kontrolü
+git log --oneline -5
+git branch -avv
+
+================================================================================
+HIZLI KOPYALA-YAPIŞT (Tüm komutlar peş peşe)
+================================================================================
+
+cd "c:\Users\mertd\OneDrive\Masaüstü\SimpleOS" && git status && git add . && git commit -m "Push all project files" && git push -u origin main
+
+================================================================================
+EĞER PUSH REDDEDİLİRSE (force update gerekiyorsa)
+================================================================================
+
+git push --force-with-lease origin main
+
+# VEYA güvenli değilse:
+git pull --rebase origin main
+git push origin main
