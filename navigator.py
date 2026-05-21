@@ -8,8 +8,10 @@ import os
 import sys
 import subprocess
 import re
+import json
 from pathlib import Path
 from typing import List, Dict, Optional
+from datetime import datetime
 
 class Colors:
     HEADER = '\033[95m'
@@ -26,8 +28,11 @@ class Colors:
 class ProjectNavigator:
     def __init__(self, base_path: str = "."):
         self.base_path = Path(base_path)
+        self.config_file = self.base_path / '.navigator_config.json'
         self.favorites = []
         self.history = []
+        self.max_history = 20
+        self.load_config()
     
     def print_header(self):
         print(f"""
@@ -152,6 +157,72 @@ class ProjectNavigator:
                         stats['md_files'] += 1
         
         return stats
+    
+    def load_config(self):
+        """Load favorites and history from config file."""
+        try:
+            if self.config_file.exists():
+                with open(self.config_file, 'r') as f:
+                    config = json.load(f)
+                    self.favorites = config.get('favorites', [])
+                    self.history = config.get('history', [])
+        except Exception as e:
+            print(f"{Colors.YELLOW}Could not load config: {e}{Colors.ENDC}")
+    
+    def save_config(self):
+        """Save favorites and history to config file."""
+        try:
+            config = {
+                'favorites': self.favorites,
+                'history': self.history[-self.max_history:],
+                'last_updated': datetime.now().isoformat()
+            }
+            with open(self.config_file, 'w') as f:
+                json.dump(config, f, indent=2)
+        except Exception as e:
+            print(f"{Colors.RED}Could not save config: {e}{Colors.ENDC}")
+    
+    def add_favorite(self, path: str) -> bool:
+        """Add a path to favorites."""
+        try:
+            if path not in self.favorites:
+                self.favorites.append(path)
+                self.save_config()
+                print(f"{Colors.GREEN}✓ Added to favorites: {path}{Colors.ENDC}")
+                return True
+            else:
+                print(f"{Colors.YELLOW}Already in favorites.{Colors.ENDC}")
+                return False
+        except Exception as e:
+            print(f"{Colors.RED}Error adding favorite: {e}{Colors.ENDC}")
+            return False
+    
+    def remove_favorite(self, index: int) -> bool:
+        """Remove favorite by index."""
+        try:
+            if 0 <= index < len(self.favorites):
+                removed = self.favorites.pop(index)
+                self.save_config()
+                print(f"{Colors.GREEN}✓ Removed from favorites: {removed}{Colors.ENDC}")
+                return True
+            else:
+                print(f"{Colors.RED}Invalid favorite index.{Colors.ENDC}")
+                return False
+        except Exception as e:
+            print(f"{Colors.RED}Error removing favorite: {e}{Colors.ENDC}")
+            return False
+    
+    def add_to_history(self, path: str):
+        """Add path to history (prevents duplicates, keeps most recent)."""
+        try:
+            if path in self.history:
+                self.history.remove(path)
+            self.history.append(path)
+            if len(self.history) > self.max_history:
+                self.history = self.history[-self.max_history:]
+            self.save_config()
+        except Exception as e:
+            print(f"{Colors.RED}Error updating history: {e}{Colors.ENDC}")
 
     def print_section(self, title: str, items: List[str]):
         """Print a formatted section."""
@@ -172,6 +243,7 @@ class ProjectNavigator:
             "📚 Documentation",
             "🎯 Learning Path",
             "❤️  Favorites",
+            "📜 History",
             "❌ Exit",
         ]
         
@@ -206,7 +278,8 @@ class ProjectNavigator:
             _, path = components[choice]
             if path and path.exists():
                 self.open_directory(path)
-                self.history.append(str(path))
+                self.add_to_history(str(path))
+                print(f"{Colors.GREEN}Added to history.{Colors.ENDC}")
             return choice
         
         return choice
@@ -341,6 +414,108 @@ class ProjectNavigator:
         print("─" * 60)
         for i, fav in enumerate(self.favorites, 1):
             print(f"  {Colors.CYAN}{i}{Colors.ENDC}. {fav}")
+        
+        print(f"\n  {Colors.CYAN}0{Colors.ENDC}. ◀ Back")
+        print(f"  {Colors.CYAN}+{Colors.ENDC}. Add new favorite")
+        print(f"  {Colors.CYAN}-{Colors.ENDC}. Remove favorite")
+        
+        choice = input(f"\n{Colors.GREEN}Select option: {Colors.ENDC}").strip()
+        
+        if choice == '+':
+            self.add_favorite_interactive()
+        elif choice == '-':
+            self.remove_favorite_interactive()
+        elif choice.isdigit() and 1 <= int(choice) <= len(self.favorites):
+            path = self.favorites[int(choice) - 1]
+            if Path(path).exists():
+                self.open_directory(Path(path))
+                self.add_to_history(path)
+            else:
+                print(f"{Colors.RED}Path no longer exists: {path}{Colors.ENDC}")
+    
+    def add_favorite_interactive(self):
+        """Interactive add favorite."""
+        print(f"\n{Colors.CYAN}Available directories:{Colors.ENDC}")
+        components = {
+            '1': ('📖 Documentation', str(self.base_path)),
+            '2': ('🧠 Kernel Core', str(self.base_path / 'kernel' / 'core')),
+            '3': ('💾 Memory Manager', str(self.base_path / 'kernel' / 'mm')),
+            '4': ('📁 File System', str(self.base_path / 'kernel' / 'fs')),
+            '5': ('🔌 Drivers', str(self.base_path / 'kernel' / 'drivers')),
+            '6': ('⚙️  x86 Architecture', str(self.base_path / 'kernel' / 'arch' / 'x86')),
+            '7': ('📋 Headers', str(self.base_path / 'kernel' / 'include')),
+            '8': ('Custom path', None),
+        }
+        
+        for key, (label, _) in components.items():
+            print(f"  {Colors.CYAN}{key}{Colors.ENDC}. {label}")
+        
+        choice = input(f"\n{Colors.GREEN}Select directory: {Colors.ENDC}").strip()
+        
+        if choice in components:
+            _, path = components[choice]
+            if path is None:
+                path = input(f"{Colors.GREEN}Enter path: {Colors.ENDC}").strip()
+            if path:
+                self.add_favorite(path)
+    
+    def remove_favorite_interactive(self):
+        """Interactive remove favorite."""
+        if not self.favorites:
+            print(f"{Colors.YELLOW}No favorites to remove.{Colors.ENDC}")
+            return
+        
+        print(f"\n{Colors.YELLOW}Select favorite to remove:{Colors.ENDC}")
+        for i, fav in enumerate(self.favorites, 1):
+            print(f"  {Colors.CYAN}{i}{Colors.ENDC}. {fav}")
+        
+        try:
+            choice = input(f"\n{Colors.GREEN}Remove (number): {Colors.ENDC}").strip()
+            if choice.isdigit():
+                self.remove_favorite(int(choice) - 1)
+        except (ValueError, IndexError):
+            print(f"{Colors.RED}Invalid choice.{Colors.ENDC}")
+    
+    def show_history_menu(self):
+        """Show and navigate history."""
+        if not self.history:
+            print(f"\n{Colors.YELLOW}No history yet.{Colors.ENDC}")
+            return
+        
+        print(f"\n{Colors.YELLOW}{Colors.BOLD}Recent Locations (Most Recent First){Colors.ENDC}")
+        print("─" * 60)
+        
+        # Show in reverse (most recent first)
+        for i, path in enumerate(reversed(self.history), 1):
+            try:
+                p = Path(path)
+                if p.exists():
+                    status = f"{Colors.GREEN}✓{Colors.ENDC}"
+                else:
+                    status = f"{Colors.RED}✗{Colors.ENDC}"
+                print(f"  {Colors.CYAN}{i}{Colors.ENDC}. {status} {path}")
+            except:
+                print(f"  {Colors.CYAN}{i}{Colors.ENDC}. {path}")
+        
+        print(f"\n  {Colors.CYAN}0{Colors.ENDC}. ◀ Back")
+        print(f"  {Colors.CYAN}c{Colors.ENDC}. Clear history")
+        
+        choice = input(f"\n{Colors.GREEN}Select option: {Colors.ENDC}").strip()
+        
+        if choice == 'c':
+            self.history = []
+            self.save_config()
+            print(f"{Colors.GREEN}✓ History cleared.{Colors.ENDC}")
+        elif choice.isdigit():
+            idx = len(self.history) - int(choice)
+            if 0 <= idx < len(self.history):
+                path = self.history[idx]
+                if Path(path).exists():
+                    self.open_directory(Path(path))
+                else:
+                    print(f"{Colors.RED}Path no longer exists: {path}{Colors.ENDC}")
+            else:
+                print(f"{Colors.RED}Invalid choice.{Colors.ENDC}")
     
     def run(self):
         """Main interactive loop."""
@@ -363,6 +538,8 @@ class ProjectNavigator:
                 elif choice == '7':
                     self.show_favorites()
                 elif choice == '8':
+                    self.show_history_menu()
+                elif choice == '9':
                     print(f"\n{Colors.GREEN}Goodbye!{Colors.ENDC}\n")
                     break
                 else:
