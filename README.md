@@ -560,3 +560,5 @@ It doesn't have fancy graphics or complex features, but the *core* is genuine: m
 
 *SimpleOS v1.0.0 - Building the Central Brain*  
 *Last Updated: 2024*
+#   S i m p l e O S  
+ 
