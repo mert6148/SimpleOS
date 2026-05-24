@@ -1,0 +1,15 @@
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\linux\distribution\bin\Release\net9.0\SimpleOSLinuxDist.exe
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\linux\distribution\bin\Release\net9.0\SimpleOSLinuxDist.deps.json
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\linux\distribution\bin\Release\net9.0\SimpleOSLinuxDist.runtimeconfig.json
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\linux\distribution\bin\Release\net9.0\SimpleOSLinuxDist.dll
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\linux\distribution\bin\Release\net9.0\SimpleOSLinuxDist.pdb
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\linux\distribution\obj\Release\net9.0\SimpleOSLinuxDist.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\linux\distribution\obj\Release\net9.0\SimpleOSLinuxDist.AssemblyInfoInputs.cache
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\linux\distribution\obj\Release\net9.0\SimpleOSLinuxDist.AssemblyInfo.cs
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\linux\distribution\obj\Release\net9.0\SimpleOSLinuxDist.csproj.CoreCompileInputs.cache
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\linux\distribution\obj\Release\net9.0\SimpleOSLinuxDist.sourcelink.json
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\linux\distribution\obj\Release\net9.0\SimpleOSLinuxDist.dll
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\linux\distribution\obj\Release\net9.0\refint\SimpleOSLinuxDist.dll
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\linux\distribution\obj\Release\net9.0\SimpleOSLinuxDist.pdb
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\linux\distribution\obj\Release\net9.0\SimpleOSLinuxDist.genruntimeconfig.cache
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\linux\distribution\obj\Release\net9.0\ref\SimpleOSLinuxDist.dll
