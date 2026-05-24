@@ -82,6 +82,8 @@ kernel/kernel.bin
 # Linux sub-project
 linux/bin/
 linux/obj/
+linux/distribution/bin/
+linux/distribution/obj/
 
 # Generated documentation
 docs/html/
