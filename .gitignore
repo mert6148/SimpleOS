@@ -106,6 +106,9 @@ simpleos/dist/
 simpleos/.env.local
 simpleos/.env.*.local
 
+google documantation/sdk/bin/
+google documantation/sdk/obj/
+
 # ============================================================================
 # PYTHON
 # ============================================================================
@@ -136,6 +139,7 @@ MANIFEST
 venv/
 ENV/
 env/
+Python314/
 
 # ============================================================================
 # LOGGING & RUNTIME
