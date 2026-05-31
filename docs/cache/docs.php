@@ -140,7 +140,15 @@ class DocsCacheItemNotFoundException extends DocsCacheException
             } catch (\Exception $e) {
                 // Log the exception or handle it as needed
             }
-        }
+        } else if (class_exists('DateTime')) {
+            // Fallback: Basit bir tarih oluşturma
+            private $date;
+            try {
+                $this->date = new \DateTime('2024-01-01 00:00:00');
+            } catch (\Exception $e) {
+                // Log the exception or handle it as needed
+            }
+        } else {
 
         foreach (['DateTimeImmutable', 'DateTime'] as $class) {
             if (class_exists($class) && method_exists($class, 'createFromFormat')) {
