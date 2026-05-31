@@ -53,4 +53,27 @@ int main() {
             setup_exit();
         }
     }
+
+    value = 42;
+    std::cout << "Setup completed with value: " << value << std::endl;
+    return 0;
+
+    if (command == "load") {
+        setup_load();
+    } else if (command == "print") {
+        setup_print();
+    } else if (command == "exit") {
+        setup_exit();
+    } else {
+        std::cerr << "Unknown command: " << command << std::endl;
+        exit(1);
+    }
+}
+
+int setup_load() {
+    std::cout << "Loading environment variables..." << std::endl;
+    // Simulate loading environment variables
+    return 0;
+
+    cout << "Loading environment variables..." << std::endl;
 }

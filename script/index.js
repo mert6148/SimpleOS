@@ -21,11 +21,16 @@ Kullanım:
   node script/index.js help
   node script/index.js env print
   node script/index.js run -- <komut> [args...]
+  node script/index.js package list
+  node script/index.js package install <package>
+  node script/index.js php package/package.php list
 
 Komutlar:
-  help         Bu ekran
-  env print    Proje kökündeki .env içeriğini güvenli biçimde yazdırır (yorumsuz)
-  run          Komutu çapraz-platform çalıştırır (Windows/WSL/Linux)
+  help           Bu ekran
+  env print      Proje kökündeki .env içeriğini güvenli biçimde yazdırır (yorumsuz)
+  run            Komutu çapraz-platform çalıştırır (Windows/WSL/Linux)
+  package        PHP paket yöneticisini çalıştırır
+  php            Herhangi bir PHP betiğini çalıştırır
 `;
   process.stdout.write(msg.trimStart());
   process.stdout.write("\n");
@@ -58,6 +63,19 @@ async function runCommand(cmd, args, opts = {}) {
   });
 }
 
+async function runPhpScript(scriptRelativePath, args) {
+  const scriptPath = path.join(__dirname, scriptRelativePath);
+  if (!fs.existsSync(scriptPath)) {
+    process.stderr.write(`Hata: PHP betiği bulunamadı: ${scriptPath}\n`);
+    process.exit(1);
+  }
+
+  const code = await runCommand("php", [scriptPath, ...args], {
+    cwd: path.dirname(scriptPath),
+  });
+  process.exit(code);
+}
+
 async function main(argv) {
   const [sub, ...rest] = argv;
   const root = findProjectRoot();
@@ -84,6 +102,21 @@ async function main(argv) {
     const [cmd, ...args] = cmdParts;
     const code = await runCommand(cmd, args, { cwd: root });
     process.exit(code);
+  }
+
+  if (sub === "package") {
+    const packageArgs = rest.length === 0 ? ["help"] : rest;
+    await runPhpScript("package/package.php", packageArgs);
+    return;
+  }
+
+  if (sub === "php") {
+    if (rest.length === 0) {
+      printHelp(1);
+    }
+    const [scriptName, ...phpArgs] = rest;
+    await runPhpScript(scriptName, phpArgs);
+    return;
   }
 
   printHelp(1);
