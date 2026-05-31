@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SimpleOSLinuxDist")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d7feb2cebd348062773bd9a9702dc88dffeea23f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8ee64fa221f623f1074e1abbdf1aeb2cee16efa6")]
 [assembly: System.Reflection.AssemblyProductAttribute("SimpleOSLinuxDist")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SimpleOSLinuxDist")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
