@@ -231,3 +231,43 @@ void irq_disable(u32 irq) {
         outb(0xA1, mask | (1 << (irq - 8)));
     }
 }
+
+/* ============================================================================
+ * EXCEPTION DISPATCH
+ * ============================================================================ */
+
+extern void printk(const char *fmt, ...);
+extern void kernel_panic(const char *fmt, ...);
+
+static u32 read_cr2(void) {
+    u32 addr;
+    asm volatile("mov %%cr2, %0" : "=r"(addr));
+    return addr;
+}
+
+void exception_dispatch(u32 exc_num, u32 error_code) {
+    printk("\n[CPU EXCEPTION]\n");
+    printk("Exception: %d (0x%x)\n", exc_num, exc_num);
+    printk("Error Code: 0x%x\n", error_code);
+
+    if (exc_num == 14) {
+        u32 fault_addr = read_cr2();
+        printk("Page Fault at 0x%x\n", fault_addr);
+        kernel_panic("Unhandled page fault at 0x%x", fault_addr);
+    }
+
+    switch (exc_num) {
+        case 0:
+            kernel_panic("Division by zero");
+            break;
+        case 6:
+            kernel_panic("Invalid opcode");
+            break;
+        case 13:
+            kernel_panic("General protection fault");
+            break;
+        default:
+            kernel_panic("Unhandled exception %d", exc_num);
+            break;
+    }
+}

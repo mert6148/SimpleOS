@@ -1,23 +1,47 @@
-# SimpleOS Kernel - Makefile
+# SimpleOS Educational x86 Kernel Build
+# Build this kernel and boot it in QEMU with one command.
 
-CC      = gcc
-CXX     = g++
-CFLAGS  = -std=c99  -Wall -Wextra -pedantic -g
-CXXFLAGS= -std=c++14 -Wall -Wextra -g
-LDFLAGS = -lpthread
+CC ?= gcc
+QEMU ?= qemu-system-i386
 
-.PHONY: all test temizle
+CFLAGS = -std=gnu99 -m32 -ffreestanding -fno-builtin -fno-stack-protector -Iinclude -g -O0 -Wall -Wextra
+LDFLAGS = -m32 -nostdlib -T arch/x86/link.ld
 
-all: test_kernel
+SRC_C = arch/x86/setup.c \
+	core/kmain.c \
+	core/sched.c \
+	mm/mm.c \
+	fs/vfs.c \
+	drivers/driver.c \
+	drivers/pic.c \
+	drivers/pit.c \
+	programs/demo_tasks.c
+SRC_ASM = arch/x86/boot.S \
+	arch/x86/exceptions.S
 
-kernelintegration.o: kernelintegration.c kernel.h
+OBJDIR = build
+OBJS = $(patsubst %.c,$(OBJDIR)/%.o,$(SRC_C)) \
+	$(patsubst %.S,$(OBJDIR)/%.o,$(SRC_ASM))
+TARGET = $(OBJDIR)/kernel.bin
+
+.PHONY: all run clean
+
+all: $(TARGET)
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)/arch/x86 $(OBJDIR)/core $(OBJDIR)/mm $(OBJDIR)/fs $(OBJDIR)/drivers
+
+$(OBJDIR)/%.o: %.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-test_kernel: test_kernel.cpp kernelintegration.o KernelArayuz.hpp kernel.h
-	$(CXX) $(CXXFLAGS) $< kernelintegration.o -o $@ $(LDFLAGS)
+$(OBJDIR)/%.o: %.S | $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-test: test_kernel
-	./test_kernel
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(OBJS)
 
-temizle:
-	rm -f *.o test_kernel
+run: $(TARGET)
+	$(QEMU) -kernel $(TARGET) -serial stdio -display none -m 128M
+
+clean:
+	rm -rf $(OBJDIR)

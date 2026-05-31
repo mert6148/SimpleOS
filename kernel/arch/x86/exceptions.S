@@ -91,7 +91,60 @@ IRQ_HANDLER  12, 12   /* Mouse */
 IRQ_HANDLER  13, 13   /* Coprocessor */
 IRQ_HANDLER  14, 14   /* ATA primary */
 IRQ_HANDLER  15, 15   /* ATA secondary */
+/* Exception and IRQ tables for C startup code */
+.global exception_table
+exception_table:
+    .long exc_0
+    .long exc_1
+    .long exc_2
+    .long exc_3
+    .long exc_4
+    .long exc_5
+    .long exc_6
+    .long exc_7
+    .long exc_8
+    .long exc_9
+    .long exc_10
+    .long exc_11
+    .long exc_12
+    .long exc_13
+    .long exc_14
+    .long exc_15
+    .long exc_16
+    .long exc_17
+    .long exc_18
+    .long exc_19
+    .long exc_20
+    .long exc_21
+    .long exc_22
+    .long exc_23
+    .long exc_24
+    .long exc_25
+    .long exc_26
+    .long exc_27
+    .long exc_28
+    .long exc_29
+    .long exc_30
+    .long exc_31
 
+.global irq_table
+irq_table:
+    .long irq_0
+    .long irq_1
+    .long irq_2
+    .long irq_3
+    .long irq_4
+    .long irq_5
+    .long irq_6
+    .long irq_7
+    .long irq_8
+    .long irq_9
+    .long irq_10
+    .long irq_11
+    .long irq_12
+    .long irq_13
+    .long irq_14
+    .long irq_15
 /* ============================================================================
  * COMMON EXCEPTION HANDLER
  * =========================================================================== */

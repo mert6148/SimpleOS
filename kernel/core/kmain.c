@@ -11,7 +11,7 @@
 #include "programs.h"
 #include <stdarg.h>
 #include <stdio.h>
-
+extern void arch_init(void);
 /* ============================================================================
  * SERIAL CONSOLE / PRINTK
  * =========================================================================== */
@@ -63,12 +63,17 @@ void kernel_main(u32 magic, u32 mbinfo) {
     printk("[KERNEL] ✓ Memory manager initialized\n");
     mm_print_stats();
     
-    /* ====== PHASE 2: SCHEDULER ====== */
-    printk("\n[KERNEL] 🔧 Phase 2: Initializing process scheduler...\n");
+    /* ====== PHASE 2: ARCHITECTURE SETUP ====== */
+    printk("\n[KERNEL] 🔧 Phase 2: Initializing CPU and interrupt architecture...\n");
+    arch_init();
+    printk("[KERNEL] ✓ CPU and interrupt architecture initialized\n");
+    
+    /* ====== PHASE 3: SCHEDULER ====== */
+    printk("\n[KERNEL] 🔧 Phase 3: Initializing process scheduler...\n");
     sched_init();
     printk("[KERNEL] ✓ Scheduler initialized\n");
     
-    /* ====== PHASE 3: FILE SYSTEM ====== */
+    /* ====== PHASE 4: FILE SYSTEM ====== */
     printk("\n[KERNEL] 🔧 Phase 3: Initializing virtual file system...\n");
     vfs_init();
     printk("[KERNEL] ✓ Virtual file system initialized\n");

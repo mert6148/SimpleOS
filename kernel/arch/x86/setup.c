@@ -156,25 +156,29 @@ void idt_install(void) {
     }
     
     /* Install exception handlers (0-31) */
+    extern void (*exception_table[])(void);
+    extern void (*irq_table[])(void);
+    extern void syscall_entry(void);
+
     for (int i = 0; i < 32; i++) {
-        idt_set_gate(i, (u32)exception_handler, 0x08, 0x8E);
+        idt_set_gate(i, (u32)exception_table[i], 0x08, 0x8E);
     }
     
     /* Install IRQ handlers (32-47) */
-    for (int i = 32; i < 48; i++) {
-        idt_set_gate(i, (u32)irq_handler, 0x08, 0x8E);
+    for (int i = 0; i < 16; i++) {
+        idt_set_gate(32 + i, (u32)irq_table[i], 0x08, 0x8E);
     }
     
     /* System call interrupt (int 0x80) */
-    idt_set_gate(0x80, (u32)syscall_handler, 0x08, 0xEE);
+    idt_set_gate(0x80, (u32)syscall_entry, 0x08, 0xEE);
     
     asm volatile("lidt (%0)" : : "r"(&idt_ptr));
 }
 
-/* Exception and interrupt handlers (stubs - implemented elsewhere) */
-extern void exception_handler(void);
-extern void irq_handler(void);
-extern void syscall_handler(void);
+/* Exception and interrupt handler tables */
+extern void (*exception_table[])(void);
+extern void (*irq_table[])(void);
+extern void syscall_entry(void);
 
 /* ============================================================================
  * PAGING SETUP
