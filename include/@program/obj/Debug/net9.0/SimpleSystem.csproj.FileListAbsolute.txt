@@ -1,0 +1,15 @@
+c:\Users\mertd\OneDrive\Masaüstü\SimpleOS\include\@program\bin\Debug\net9.0\SimpleSystem.exe
+c:\Users\mertd\OneDrive\Masaüstü\SimpleOS\include\@program\bin\Debug\net9.0\SimpleSystem.deps.json
+c:\Users\mertd\OneDrive\Masaüstü\SimpleOS\include\@program\bin\Debug\net9.0\SimpleSystem.runtimeconfig.json
+c:\Users\mertd\OneDrive\Masaüstü\SimpleOS\include\@program\bin\Debug\net9.0\SimpleSystem.dll
+c:\Users\mertd\OneDrive\Masaüstü\SimpleOS\include\@program\bin\Debug\net9.0\SimpleSystem.pdb
+c:\Users\mertd\OneDrive\Masaüstü\SimpleOS\include\@program\obj\Debug\net9.0\SimpleSystem.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\mertd\OneDrive\Masaüstü\SimpleOS\include\@program\obj\Debug\net9.0\SimpleSystem.AssemblyInfoInputs.cache
+c:\Users\mertd\OneDrive\Masaüstü\SimpleOS\include\@program\obj\Debug\net9.0\SimpleSystem.AssemblyInfo.cs
+c:\Users\mertd\OneDrive\Masaüstü\SimpleOS\include\@program\obj\Debug\net9.0\SimpleSystem.csproj.CoreCompileInputs.cache
+c:\Users\mertd\OneDrive\Masaüstü\SimpleOS\include\@program\obj\Debug\net9.0\SimpleSystem.sourcelink.json
+c:\Users\mertd\OneDrive\Masaüstü\SimpleOS\include\@program\obj\Debug\net9.0\SimpleSystem.dll
+c:\Users\mertd\OneDrive\Masaüstü\SimpleOS\include\@program\obj\Debug\net9.0\refint\SimpleSystem.dll
+c:\Users\mertd\OneDrive\Masaüstü\SimpleOS\include\@program\obj\Debug\net9.0\SimpleSystem.pdb
+c:\Users\mertd\OneDrive\Masaüstü\SimpleOS\include\@program\obj\Debug\net9.0\SimpleSystem.genruntimeconfig.cache
+c:\Users\mertd\OneDrive\Masaüstü\SimpleOS\include\@program\obj\Debug\net9.0\ref\SimpleSystem.dll
