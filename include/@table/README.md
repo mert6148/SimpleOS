@@ -1,3 +1,35 @@
+# TableDB - Minimal C++ Table Database
+
+This folder contains a small in-memory table database implemented in C++.
+
+Features:
+- Create/drop tables with named columns
+- Insert rows and list/select data
+- Save a table to CSV and load CSV files as tables
+- Interactive CLI `table_cli`
+
+Build (if you have g++/make):
+
+```bash
+cd include/@table
+make
+```
+
+Run CLI:
+
+```bash
+./table_cli
+# then use commands like:
+# create users id name email
+# insert users 1 Alice alice@example.com
+# select users
+# save users users.csv
+# load users.csv
+```
+
+Notes:
+- The CSV loader derives the table name from the filename (strip extension).
+- The CSV format supports quoted fields and doubled quotes escaping.
 # SimpleOS Table Component
 
 Güçlü, otomasyonlu ve responsive bir JavaScript tablo bileşeni.
