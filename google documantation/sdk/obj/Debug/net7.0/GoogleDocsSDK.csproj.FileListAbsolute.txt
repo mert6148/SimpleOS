@@ -1,0 +1,5 @@
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\obj\Debug\net7.0\GoogleDocsSDK.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\obj\Debug\net7.0\GoogleDocsSDK.AssemblyInfoInputs.cache
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\obj\Debug\net7.0\GoogleDocsSDK.AssemblyInfo.cs
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\obj\Debug\net7.0\GoogleDocsSDK.csproj.CoreCompileInputs.cache
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\obj\Debug\net7.0\GoogleDocsSDK.sourcelink.json

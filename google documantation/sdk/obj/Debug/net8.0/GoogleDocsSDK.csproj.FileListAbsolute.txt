@@ -1,0 +1,15 @@
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\obj\Debug\net8.0\GoogleDocsSDK.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\obj\Debug\net8.0\GoogleDocsSDK.AssemblyInfoInputs.cache
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\obj\Debug\net8.0\GoogleDocsSDK.AssemblyInfo.cs
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\obj\Debug\net8.0\GoogleDocsSDK.csproj.CoreCompileInputs.cache
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\obj\Debug\net8.0\GoogleDocsSDK.sourcelink.json
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\bin\Debug\net8.0\GoogleDocsSDK.exe
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\bin\Debug\net8.0\GoogleDocsSDK.deps.json
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\bin\Debug\net8.0\GoogleDocsSDK.runtimeconfig.json
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\bin\Debug\net8.0\GoogleDocsSDK.dll
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\bin\Debug\net8.0\GoogleDocsSDK.pdb
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\obj\Debug\net8.0\GoogleDocsSDK.dll
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\obj\Debug\net8.0\refint\GoogleDocsSDK.dll
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\obj\Debug\net8.0\GoogleDocsSDK.pdb
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\obj\Debug\net8.0\GoogleDocsSDK.genruntimeconfig.cache
+C:\Users\mertd\OneDrive\Masaüstü\SimpleOS\google documantation\sdk\obj\Debug\net8.0\ref\GoogleDocsSDK.dll
