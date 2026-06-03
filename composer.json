@@ -3,6 +3,7 @@
         "phpmailer/phpmailer": "*",
         "monolog/monolog": "^3.10",
         "wordpressify/wordpressify": "^0.0.2",
-        "composer-wordpress/wordpress-packager": "*"
+        "composer-wordpress/wordpress-packager": "*",
+        "phpoffice/phpspreadsheet": "*"
     }
 }
