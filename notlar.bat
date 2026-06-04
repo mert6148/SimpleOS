@@ -1,0 +1,60 @@
+GitHub komut listesi
+===================
+
+1) İlk kurulum (repo oluşturma ve remote ekleme)
+
+cd "c:\Users\mertd\OneDrive\Masaüstü\SimpleOS"
+git init
+git branch -M main
+git add .
+git commit -m "Initial commit"
+git remote add origin "https://github.com/mert6148/SimpleOS.git"
+git push -u origin main
+
+2) Var olan repo için hızlı senkronizasyon
+
+cd "c:\Users\mertd\OneDrive\Masaüstü\SimpleOS"
+git status
+git add .
+git commit -m "Sync project"   # "nothing to commit" çıkarsa değişiklik yok demektir
+git remote -v
+git branch -M main
+git push -u origin main
+
+3) GitHub varsayılan dalı master ise
+git branch -M master
+git push -u origin master
+
+4) Sık kullanılan Git komutları
+
+git status                 # çalışma dizinini ve değişiklikleri gösterir
+git add .                  # tüm değişiklikleri sahneye ekler
+git commit -m "mesaj"      # commit oluşturur
+git push -u origin main    # main dalını GitHub'a gönderir
+git push --force-with-lease origin main  # güvenli zorunlu push
+git pull --rebase origin main  # uzak değişiklikleri yeniden uygula
+git remote -v             # uzak depoları gösterir
+git log --oneline -5      # son 5 commit'i kısaca gösterir
+git branch -avv           # yerel ve uzak dalları listeler
+
+5) Remote URL değiştirme
+git remote remove origin
+git remote add origin "https://github.com/mert6148/SimpleOS.git"
+
+6) Windows batch yardımcı komutu
+
+Aşağıdaki komutlarla `github-commands.bat` kullanabilirsiniz:
+github-commands.bat help
+github-commands.bat init https://github.com/mert6148/SimpleOS.git main
+github-commands.bat status
+github-commands.bat add
+github-commands.bat commit "Update README"
+github-commands.bat push
+github-commands.bat force-push
+github-commands.bat set-remote https://github.com/mert6148/SimpleOS.git
+github-commands.bat remote
+github-commands.bat log
+github-commands.bat branch
+github-commands.bat pull-rebase
+
+Not: `main` yerine `master` kullanmak isterseniz her komutta `master` yazabilirsiniz.
